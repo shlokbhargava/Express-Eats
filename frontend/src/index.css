@@ -5,3 +5,14 @@ main {
 .navbar.bg-dark {
   background-color: #ec9996 !important;
 }
+
+.h1-thin {
+  font-size: 3rem;
+  font-weight: 350;
+}
+
+.h1-bold {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #f55b92;
+}
