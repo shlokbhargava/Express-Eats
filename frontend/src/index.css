@@ -1,0 +1,7 @@
+main {
+  min-height: 83vh;
+}
+
+.navbar.bg-dark {
+  background-color: #ec9996 !important;
+}
