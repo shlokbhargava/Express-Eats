@@ -1,0 +1,29 @@
+{
+  "name": "express-eats-app",
+  "version": "1.0.0",
+  "description": "Food ordering app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shlokbhargava/Express-eats.git"
+  },
+  "author": "Shlok Bhargava",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shlokbhargava/Express-eats/issues"
+  },
+  "homepage": "https://github.com/shlokbhargava/Express-eats#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.2.1",
+    "nodemon": "^2.0.12"
+  }
+}
