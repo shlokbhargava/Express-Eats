@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Container, Form, FormControl, InputGroup, Row } from 'react-bootstrap'
+import { Col, Container, FormControl, InputGroup, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 
 const SearchScreen = () => {
     return (
@@ -8,7 +8,18 @@ const SearchScreen = () => {
                 <Col xs={12} md={8}>
                     <InputGroup className="mb-2">
                         <FormControl placeholder="Search Restaurant" />
-                        <InputGroup.Text>@</InputGroup.Text>
+                        <InputGroup.Text><i type='button' className="fas fa-search"></i></InputGroup.Text>
+                        <InputGroup.Text>
+                            <OverlayTrigger key='top' placement='top'
+                                    overlay={
+                                        <Tooltip id='tooltip-top'>
+                                            Detect location
+                                        </Tooltip>
+                                    }
+                                    >
+                                    <i type='button' className="fas fa-map-marker-alt"></i>
+                            </OverlayTrigger>
+                        </InputGroup.Text>
                     </InputGroup>
                 </Col> 
             </Row>

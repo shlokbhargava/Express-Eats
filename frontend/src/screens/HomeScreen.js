@@ -5,7 +5,7 @@ import SearchScreen from './SearchScreen'
 const HomeScreen = () => {
     return (
         <Container className='py-5'>
-            <Row className='py-4'>
+            <Row className='py-5 mb-5'>
                 <Col md={6}>
                     <h1 className='h1-thin'>Safe Food</h1>
                     <h1 className='h1-bold mb-4'>DELIVERY</h1>
@@ -16,7 +16,7 @@ const HomeScreen = () => {
                     <Image src='/images/food-delivery.png' alt='Express Eats' fluid />
                 </Col>
             </Row>
-            <Row className='py-5'>
+            <Row className='py-3'>
                 <p className='text-center'>Search your nearest restaurant <i className="fas fa-store-alt"></i></p>
             </Row>
             <SearchScreen />
