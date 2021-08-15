@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Container, Nav, Navbar } from 'react-bootstrap'
+import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
@@ -11,8 +11,15 @@ const Header = () => {
                 </Navbar.Brand>
                 <Nav className="ml-auto">
                     <Link to='/login'><Button className='btn btn-dark'>Login</Button></Link> &nbsp;&nbsp;
-                    <Link to='/register'><Button className='btn btn-dark'>Register</Button></Link>
+                    <Link to='/register'><Button className='btn btn-dark'>Register</Button></Link> &nbsp;&nbsp;
+                    <Link to='/cart'>
+                        <Button className='btn btn-dark'>
+                            <i className="fas fa-shopping-cart"></i>
+                            {/* <Badge variant="dark">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge> */}
+                        </Button> 
+                    </Link>
                 </Nav>
+                {/* <Link to=''></Link> */}
             </Container>
         </Navbar>
     )

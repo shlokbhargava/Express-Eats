@@ -1,7 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Col, Container, FormControl, InputGroup, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 
 const SearchScreen = () => {
+
+    useEffect(() => {
+        
+    }, [])
+
+
     return (
         <Container>
             <Row className='justify-content-center'>
