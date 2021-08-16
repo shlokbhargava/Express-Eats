@@ -1,18 +1,25 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Col, Container, ListGroup, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 const Footer = () => {
+
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
     return (
-        <Container className='mt-5 footer py-5' fluid>
+        <Container className='mt-2 footer py-5' fluid>
             <Container>
                 <Row>
                     <Col className='text-center py-2' md={4}>
                         <h3>Express Eats for Business</h3>
                         <p>Become Express Seller. Grow your business in India. Register for free. Start delighting your customers with lucious food.</p>
-                        <Link to='/seller/register'>
-                            <Button className='btn btn-dark'>Get Started</Button>
-                        </Link>
+                        { !userInfo && 
+                            <Link to='/seller/register'>
+                                <Button className='btn btn-dark'>Get Started</Button>
+                            </Link>
+                        }
                     </Col>
                     <Col className='text-center py-2' md={{ span: 4, offset: 4 }}>
                         <h3>Reach Us At</h3>

@@ -20,7 +20,7 @@ exports.authUser = asyncHandler(async (req, res) => {
             token: generateToken(user._id)
         })
     } else {
-        // unauthorized
+        // 401 unauthorized
         res.status(401)
         throw new Error('Invalid email or password')
     }
@@ -53,7 +53,6 @@ exports.registerUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
-            // token: generateToken(user._id)
         })
     } else {
         res.status(400)

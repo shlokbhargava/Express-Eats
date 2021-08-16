@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-const LoginScreen = () => {
+const LoginScreen = ({ history }) => {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState('')
@@ -15,6 +15,12 @@ const LoginScreen = () => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { loading, success, userInfo, error } = userLogin
+
+    useEffect(() => {
+        if (userInfo) {
+            history.push('/')
+        }
+    }, [userInfo, history])
 
     const loginHandler = (e) => {
         e.preventDefault()
@@ -26,15 +32,20 @@ const LoginScreen = () => {
         <FormContainer>
             <h2 className='text-center mt-2 mb-3'>LOGIN</h2>
             { loading && <Loader /> }
-            { success && <Message variant='success'>{'You have logged in'}</Message> }
             { error && <Message variant='danger'>{error}</Message> }
+            { localStorage.getItem('message') &&
+                <>
+                    <Message variant='sucesss'>{localStorage.getItem('message')}</Message>
+                    {localStorage.removeItem('message')}    
+                </>
+            }
             <Form onSubmit={loginHandler}>
                 <Row className="mb-3">
-                    <Form.Group className="mb-3" controlId="validationCustom02">
+                    <Form.Group className="mb-3">
                         <Form.Label>Email</Form.Label>
                         <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter Your Email" required />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="validationCustom03">
+                    <Form.Group className="mb-3">
                         <Form.Label>Password</Form.Label>
                         <Form.Control value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Enter Your Password" required />
                     </Form.Group>

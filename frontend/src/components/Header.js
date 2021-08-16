@@ -1,8 +1,19 @@
 import React from 'react'
-import { Badge, Button, Container, Nav, Navbar } from 'react-bootstrap'
+import { Badge, Button, Container, Dropdown, DropdownButton, Nav, Navbar } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { logout } from '../actions/userActions'
 
 const Header = () => {
+    const dispatch = useDispatch()
+
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
+
     return (
         <Navbar className='navbar navbar-expand-lg navbar-dark bg-dark py-3'>
             <Container>
@@ -10,8 +21,25 @@ const Header = () => {
                     Express Eats &nbsp; <i className="fas fa-utensils"></i>
                 </Navbar.Brand>
                 <Nav className="ml-auto">
-                    <Link to='/login'><Button className='btn btn-dark'>Login</Button></Link> &nbsp;&nbsp;
-                    <Link to='/register'><Button className='btn btn-dark'>Register</Button></Link> &nbsp;&nbsp;
+                    { userInfo ? 
+                    <>
+                        <DropdownButton variant='dark' title={userInfo.name}>
+                            <Dropdown.Item href="/profile"><i className="fas fa-user-circle"></i> Profile</Dropdown.Item>
+                            {userInfo && !userInfo.isAdmin &&
+                                <Dropdown.Item href="/">
+                                    <i className="fas fa-box-open"></i> Orders
+                                </Dropdown.Item>
+                            }   
+                            <Dropdown.Item onClick={() => logoutHandler()}><i className="fas fa-sign-out-alt"></i> Logout</Dropdown.Item>
+                        </DropdownButton>  &nbsp;&nbsp;
+                    </>
+                    : 
+                    <>
+                        <Link to='/login'><Button className='btn btn-dark'>Login</Button></Link> &nbsp;&nbsp;
+                        <Link to='/register'><Button className='btn btn-dark'>Register</Button></Link> &nbsp;&nbsp;
+                    </>
+                    }
+
                     <Link to='/cart'>
                         <Button className='btn btn-dark'>
                             <i className="fas fa-shopping-cart"></i>

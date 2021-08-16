@@ -8,7 +8,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ history }) => {
     const dispatch = useDispatch()
 
     const userRegister = useSelector((state) => state.userRegister)
@@ -21,13 +21,14 @@ const RegisterScreen = () => {
     const [message, setMessage] = useState(null)
 
     useEffect(() => {
-        if (success) {
-            setName('')
-            setEmail('')
-            setPassword('')
-            setConfirmPassword('')
+        if (userInfo) {
+            history.push('/')
         }
-    }, [success])
+        if (success) {
+            localStorage.setItem('message', 'You have registered successfully. Just login to your account')
+            history.push('/login')
+        }
+    }, [success, userInfo, history])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -44,7 +45,6 @@ const RegisterScreen = () => {
             <h2 className='text-center mt-2 mb-3'>REGISTER</h2>
             { message && <Message variant='danger'>{message}</Message> }
             { loading && <Loader /> }
-            { success && <Message variant='success'>{'You have registered successfully'}</Message> }
             { error && <Message variant='danger'>{error}</Message> }
             <Form onSubmit={submitHandler}>
                 <Row className="mb-3">
