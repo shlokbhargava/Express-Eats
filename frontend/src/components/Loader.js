@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap'
 
 const Loader = () => {
     return (
-        <Spinner animation="grow" variant="danger" style={{ width: '100px', height: '100px', margin: 'auto', display: 'block'}} />
+        <Spinner animation="grow" variant="dark" style={{ width: '150px', height: '150px', margin: 'auto', display: 'block'}} />
     )
 }
 
