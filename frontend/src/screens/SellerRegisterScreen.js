@@ -58,6 +58,8 @@ const SellerRegisterScreen = () => {
                     <Form.Control type="password" placeholder="Confirm Password" />
                 </Form.Group>
 
+                <Form.Control type='hidden' name='isAdmin' value='true'></Form.Control>
+
                 <Button className='btn btn-dark mb-4' type="submit">Register</Button>
             </Form>
         </FormContainer>
