@@ -9,7 +9,7 @@ const Footer = () => {
     const { userInfo } = userLogin
 
     return (
-        <Container className='mt-2 footer py-5' fluid>
+        <Container className='mt-5 footer py-5' fluid>
             <Container>
                 <Row>
                     <Col className='text-center py-2' md={4}>

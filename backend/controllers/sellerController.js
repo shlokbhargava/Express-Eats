@@ -6,8 +6,7 @@ const User = require('../models/userModel')
 // @route   POST /api/sellers
 // @access  Public
 exports.registerSeller = asyncHandler(async (req, res) => {
-    const { name, email, contact, minOrderValue, state, country, onlinePayment, cod, password } = req.body
-    console.log(email)
+    const { name, email, contact, minOrderValue, time, description, state, country, onlinePayment, cod, password } = req.body
 
     const sellerExists = await User.findOne({ email })
 
@@ -16,22 +15,29 @@ exports.registerSeller = asyncHandler(async (req, res) => {
         throw new Error('Seller already exists')
     } 
 
-    const seller = await User.create({
-        name,
-        email,
-        password,
-        isSeller: true
-    })
-
     const restaurant = await Restaurant.create({
         name,
         email,
         contact,
         minOrderValue,
+        time,
+        description,
         state,
         country,
         onlinePayment,
         cod
+    })
+
+    if (!restaurant) {
+        res.status(400)
+        throw new Error('Invalid data')
+    }
+
+    const seller = await User.create({
+        name,
+        email,
+        password,
+        isSeller: true
     })
 
     if (seller && restaurant) {
@@ -42,6 +48,7 @@ exports.registerSeller = asyncHandler(async (req, res) => {
             isSeller: seller.isSeller,
         })
     } else {
+        await Restaurant.findByIdAndDelete(restaurant._id)
         res.status(400)
         throw new Error('Invalid data')
     }

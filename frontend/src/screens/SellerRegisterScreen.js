@@ -12,8 +12,10 @@ const SellerRegisterScreen = ({ history }) => {
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
-    const [contact, setContact] = useState()
+    const [contact, setContact] = useState('')
     const [minOrderValue, setMinOrderValue] = useState(0)
+    const [time, setTime] = useState('')
+    const [description, setDescription] = useState('')
     const [state, setState] = useState('')
     const [country, setCountry] = useState('')
     const [onlinePayment, setOnlinePayment] = useState(false)
@@ -48,7 +50,7 @@ const SellerRegisterScreen = ({ history }) => {
         } else if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            dispatch(registerSeller(name, email, contact, minOrderValue, state, country, onlinePayment, cod, password, isSeller))
+            dispatch(registerSeller({name, email, contact, minOrderValue, time, description, state, country, onlinePayment, cod, password, isSeller}))
         }
     }
 
@@ -68,16 +70,24 @@ const SellerRegisterScreen = ({ history }) => {
                     <Form.Label>Email</Form.Label>
                     <Form.Control type='email' value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
                 </Form.Group>
-                <Row className="mb-3">
-                    <Form.Group className='mb-2' as={Col}>
+                <Row className="mb-2">
+                    <Form.Group as={Col}>
                         <Form.Label>Contact</Form.Label>
                         <Form.Control type='number' value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact" required />
                     </Form.Group>
-                    <Form.Group className='mb-2' as={Col}>
+                    <Form.Group as={Col}>
                         <Form.Label>Min Order Value</Form.Label>
                         <Form.Control type="number" value={minOrderValue} onChange={(e) => setMinOrderValue(e.target.value)} placeholder="Min Order Value" required />
                     </Form.Group>
+                    <Form.Group as={Col}>
+                        <Form.Label>Closing Time</Form.Label>
+                        <Form.Control type='time' value={time} onChange={(e) => setTime(e.target.value)} />
+                    </Form.Group>
                 </Row>
+                <Form.Group className="mb-3">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control as="textarea" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add a description for your restaurant" style={{ height: '70px' }} />
+                </Form.Group>
 
                 <h6>Address: </h6>
                 <Row className="mb-3">

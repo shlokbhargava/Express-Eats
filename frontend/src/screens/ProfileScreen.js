@@ -25,7 +25,11 @@ const ProfileScreen = ({ history }) => {
 
         <>
             <Breadcrumb className='mt-2'>
-                <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+                { userInfo && !userInfo.isSeller ? 
+                    <Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+                :
+                    <Breadcrumb.Item href="/dashboard">Dashboard</Breadcrumb.Item>
+                }
                 <Breadcrumb.Item active>Profile</Breadcrumb.Item>
             </Breadcrumb>
             <FormContainer>

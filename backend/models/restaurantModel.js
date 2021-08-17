@@ -18,6 +18,14 @@ const restaurantSchema = mongoose.Schema({
         type: Number,
         required: true
     },
+    time: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
     state: {
         type: String,
         required: true

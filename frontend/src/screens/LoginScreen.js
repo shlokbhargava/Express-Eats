@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { restaurant } from '../actions/restaurantActions';
 import { login } from '../actions/userActions';
 import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
@@ -17,7 +18,11 @@ const LoginScreen = ({ history }) => {
     const { loading, success, userInfo, error } = userLogin
 
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && userInfo.isSeller) {
+            history.push('/dashboard')
+        }
+
+        if (userInfo && !userInfo.isSeller) {
             history.push('/')
         }
     }, [userInfo, history])
@@ -26,6 +31,7 @@ const LoginScreen = ({ history }) => {
         e.preventDefault()
 
         dispatch(login(email, password))
+        dispatch(restaurant(email))
     }
   
     return (
