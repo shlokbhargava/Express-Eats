@@ -1,5 +1,6 @@
 import { USER_LOGIN_FAIL, USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_REGISTER_FAIL, USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS } from "../constants/userConstants"
 import axios from 'axios'
+import { RESTAURANT_DETAILS_RESET } from "../constants/restaurantConstants"
 
 export const login = (email, password) => async(dispatch) => {
     try {
@@ -29,7 +30,9 @@ export const login = (email, password) => async(dispatch) => {
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('restaurantInfo')
     dispatch({ type: USER_LOGOUT })
+    dispatch({ type: RESTAURANT_DETAILS_RESET })
 }
 
 export const register = (name, email, password) => async(dispatch) => {

@@ -15,6 +15,8 @@ export const restaurant = (email) => async(dispatch) => {
             type: RESTAURANT_DETAILS_SUCCESS,
             payload: data
         })
+
+        localStorage.setItem('restaurantInfo', JSON.stringify(data))
     } catch (error) {
         dispatch({
             type: RESTAURANT_DETAILS_FAIL,

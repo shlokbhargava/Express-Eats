@@ -18,10 +18,25 @@ main {
 }
 
 p {
-  font-size: 1.04rem;
+  font-size: 1.05rem;
 }
 
 .footer {
   height: auto;
   background-color: #ec9996ad;
+}
+
+.success-badge {
+  background-color: #00b74a;
+}
+
+.note-light {
+  background-color: #fbfbfb;
+  border-color: #262626;
+}
+
+.note {
+  padding: 10px 30px;
+  border-left: 6px solid;
+  border-radius: 5px;
 }

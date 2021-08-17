@@ -1,7 +1,7 @@
-import { RESTAURANT_DETAILS_FAIL, RESTAURANT_DETAILS_REQUEST, RESTAURANT_DETAILS_SUCCESS } from "../constants/restaurantConstants";
+import { RESTAURANT_DETAILS_FAIL, RESTAURANT_DETAILS_REQUEST, RESTAURANT_DETAILS_RESET, RESTAURANT_DETAILS_SUCCESS } from "../constants/restaurantConstants";
 
 
-export const restaurantDetailsReducer = (state = { restaurantInfo: {} }, action) => {
+export const restaurantDetailsReducer = (state = {}, action) => {
     switch (action.type) {
         case RESTAURANT_DETAILS_REQUEST:
             return { loading: true, ...state }
@@ -9,6 +9,8 @@ export const restaurantDetailsReducer = (state = { restaurantInfo: {} }, action)
             return { loading: false, restaurantInfo: action.payload }
         case RESTAURANT_DETAILS_FAIL:
             return { loading: false, error: action.payload }
+        case RESTAURANT_DETAILS_RESET:
+            return {}
         default:
             return state
     }
