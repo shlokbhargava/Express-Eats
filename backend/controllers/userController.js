@@ -16,7 +16,7 @@ exports.authUser = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            isSeller: user.isSeller,
             token: generateToken(user._id)
         })
     } else {
@@ -27,7 +27,7 @@ exports.authUser = asyncHandler(async (req, res) => {
 })
 
 
-// @desc    Register user & get token
+// @desc    Register user
 // @route   POST /api/users
 // @access  Public
 exports.registerUser = asyncHandler(async (req, res) => {
@@ -52,7 +52,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
             _id: user._id,
             name: user.name,
             email: user.email,
-            isAdmin: user.isAdmin,
+            isSeller: user.isSeller,
         })
     } else {
         res.status(400)

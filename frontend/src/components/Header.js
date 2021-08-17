@@ -25,7 +25,7 @@ const Header = () => {
                     <>
                         <DropdownButton variant='dark' title={userInfo.name}>
                             <Dropdown.Item href="/profile"><i className="fas fa-user-circle"></i> Profile</Dropdown.Item>
-                            {userInfo && !userInfo.isAdmin &&
+                            {userInfo && !userInfo.isSeller &&
                                 <Dropdown.Item href="/">
                                     <i className="fas fa-box-open"></i> Orders
                                 </Dropdown.Item>

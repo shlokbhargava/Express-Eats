@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const db = require('./config/db')
 const userRoutes = require('./routes/userRoutes')
+const sellerRoutes = require('./routes/sellerRoutes')
 
 dotenv.config()
 
@@ -13,6 +14,7 @@ const app = express()
 app.use(express.json())
 
 app.use('/api/users', userRoutes)
+app.use('/api/sellers', sellerRoutes)
 
 app.use(notFound)
 

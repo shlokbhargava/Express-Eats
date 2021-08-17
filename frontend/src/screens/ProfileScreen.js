@@ -30,7 +30,7 @@ const ProfileScreen = ({ history }) => {
             </Breadcrumb>
             <FormContainer>
                 <Form>
-                    { userInfo && userInfo.isAdmin ? '' 
+                    { userInfo && userInfo.isSeller ? '' 
                     
                     :
                         <>
