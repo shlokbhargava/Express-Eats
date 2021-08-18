@@ -5,7 +5,7 @@ const User = require('../models/userModel')
 exports.protect = asyncHandler(async (req, res, next) => {
     let token
 
-    if (req.headers.authorization && req,headers.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1]
 
@@ -26,3 +26,13 @@ exports.protect = asyncHandler(async (req, res, next) => {
         throw new Error('Not authorized, no token')
     }
 })
+
+
+exports.seller = (req, res, next) => {
+    if (req.user && req.user.isSeller) {
+        next()
+    } else {
+        res.status(401)
+        throw new Error('Not authorized as a seller')
+    }
+}

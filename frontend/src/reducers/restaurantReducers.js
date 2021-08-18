@@ -1,4 +1,4 @@
-import { RESTAURANT_DETAILS_FAIL, RESTAURANT_DETAILS_REQUEST, RESTAURANT_DETAILS_RESET, RESTAURANT_DETAILS_SUCCESS } from "../constants/restaurantConstants";
+import { RESTAURANT_DETAILS_FAIL, RESTAURANT_DETAILS_REQUEST, RESTAURANT_DETAILS_SUCCESS } from "../constants/restaurantConstants";
 
 
 export const restaurantDetailsReducer = (state = {}, action) => {
@@ -9,8 +9,6 @@ export const restaurantDetailsReducer = (state = {}, action) => {
             return { loading: false, restaurantInfo: action.payload }
         case RESTAURANT_DETAILS_FAIL:
             return { loading: false, error: action.payload }
-        case RESTAURANT_DETAILS_RESET:
-            return {}
         default:
             return state
     }

@@ -1,32 +1,49 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { Badge, Col, Container, Row } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Badge, Button, Col, Container, Row, Modal } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { createDish, listDishes } from '../actions/dishActions'
+import { DISH_CREATE_RESET } from '../constants/dishConstants'
+import Dish from '../components/Dish'
 
 const SellerDashboard = ({ history }) => {
+    const dispatch = useDispatch()
+
+    const [smShow, setSmShow] = useState(false);
+
     const restaurantDetails = useSelector((state) => state.restaurantDetails)
     const { restaurantInfo, loading, error } = restaurantDetails
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
+    const dishCreate = useSelector((state) => state.dishCreate)
+    const { loading: loadingCreate, success: successCreate, dish, error: errorCreate } = dishCreate
+
+    const dishList = useSelector((state) => state.dishList)
+    const { loading: loadingDish, error: errorDish, dishes } = dishList
+
     useEffect(() => {
-        if (!userInfo || (userInfo && !userInfo.isSeller)) {
+        dispatch({ type: DISH_CREATE_RESET })
+            
+        if (!userInfo) {
+            history.push('/login')
+        }
+        if (userInfo && !userInfo.isSeller) {
             history.push('/')
         }
-    }, [userInfo, history])
-
-    function timeConvert (time) {
-        time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time]
-      
-        if (time.length > 1) { 
-          time = time.slice (1)  
-          time[5] = +time[0] < 12 ? ' AM' : ' PM' 
-          time[0] = +time[0] % 12 || 12
+        if (successCreate) {
+            history.push(`/dish/${dish._id}/edit`)
         }
-        return time.join ('')
-      }
+        dispatch(listDishes(restaurantInfo._id))
+    }, [userInfo, history, restaurantInfo, successCreate, dispatch, dish])
+
+    const addDishHandler = () => {
+        setSmShow(true)
+        dispatch(createDish(restaurantInfo._id))
+    }
+
     return (
         <Container className='py-5'>
             { loading && <Loader /> }
@@ -43,12 +60,35 @@ const SellerDashboard = ({ history }) => {
                     <p>
                         Deliver in : {restaurantInfo.state}, {restaurantInfo.country} <br></br>
                         Call us : +91-{restaurantInfo.contact} <br></br>
-                        Open till : {timeConvert(restaurantInfo.time)}
+                        Open till : {restaurantInfo.time}
                     </p>
                 </Col>
                 <Col md={6}>
                     {/* <Image src='/images/food-delivery.png' alt='Express Eats' fluid /> */}
                 </Col>
+            </Row>
+            { errorCreate && <Message variant='danger'>{errorCreate}</Message> }
+            { loadingCreate &&  
+                <Modal size="sm" show={smShow} onHide={() => setSmShow(false)}>
+                    <Loader />
+                </Modal>
+            }
+            <h4 className='float-start'>Edit, Create or delete any dish. <i className="fas fa-edit"></i></h4>
+            <Button onClick={addDishHandler} className='float-end'>
+                <i className="fas fa-plus"></i>&nbsp; Add a dish
+            </Button>
+            <br></br>
+            <br></br>
+            <Row>
+                { loadingDish && <Loader /> }
+                {/* { loadingDish && <Message variant='warning'>{'HOLD ON! FETCHING LUSCIOUS DISHES FOR YOU'}</Message> } */}
+                { errorDish && <Message variant='danger'>{errorDish}</Message> }
+                { dishes && !loadingDish && dishes.length === 0 && <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> }
+                { dishes && dishes.map((dish) => (
+                    <Col key={dish._id}>
+                        <Dish dish={dish} />
+                    </Col>
+                ))}
             </Row>
         </Container>
     )
