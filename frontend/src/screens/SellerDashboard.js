@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Badge, Button, Col, Container, Row, Modal } from 'react-bootstrap'
+import { Badge, Button, Col, Container, Row, Modal, Image } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { createDish, listDishes } from '../actions/dishActions'
@@ -81,9 +81,10 @@ const SellerDashboard = ({ history }) => {
             <br></br>
             <Row>
                 { loadingDish && <Loader /> }
-                {/* { loadingDish && <Message variant='warning'>{'HOLD ON! FETCHING LUSCIOUS DISHES FOR YOU'}</Message> } */}
                 { errorDish && <Message variant='danger'>{errorDish}</Message> }
-                { dishes && !loadingDish && dishes.length === 0 && <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> }
+                { dishes && !loadingDish && dishes.length === 0 && 
+                <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> 
+                }
                 { dishes && dishes.map((dish) => (
                     <Col key={dish._id}>
                         <Dish dish={dish} />

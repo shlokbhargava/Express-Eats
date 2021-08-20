@@ -30,10 +30,21 @@ exports.dishList = asyncHandler(async (req, res) => {
     }
 })
 
+exports.dishDetail = asyncHandler(async (req, res) => {
+    const dish = await Dish.findById(req.params.id)
+    
+    if (dish) {
+        res.status(200).json(dish)
+    } else {
+        res.status(404)
+        throw new Error('No Dish found')
+    }
+})
+
 exports.editDish = asyncHandler(async (req, res) => {
     const { name, description, type, cost, image } = req.body
 
-    const dish = Dish.findById(req.params.id)
+    const dish = await Dish.findById(req.params.id)
     
     if (dish) {
         dish.name = name,

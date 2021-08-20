@@ -1,6 +1,6 @@
+const path = require('path')
 const express = require('express')
 const dotenv = require('dotenv')
-const path = require('path')
 const { notFound, errorHandler } = require('./middleware/errorMiddleware')
 const db = require('./config/db')
 const userRoutes = require('./routes/userRoutes')

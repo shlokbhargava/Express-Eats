@@ -15,7 +15,7 @@ const LoginScreen = ({ history }) => {
     const [password, setPassword] = useState('')
 
     const userLogin = useSelector((state) => state.userLogin)
-    const { loading, success, userInfo, error } = userLogin
+    const { loading, userInfo, error } = userLogin
 
     useEffect(() => {
         if (userInfo && userInfo.isSeller) {

@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
 import { sellerRegisterReducer } from './reducers/sellerReducers'
 import { restaurantDetailsReducer } from './reducers/restaurantReducers'
-import { dishCreateReducer, dishDetailsReducer, dishListReducer } from './reducers/dishReducers'
+import { dishCreateReducer, dishDetaisReducer, dishEditReducer, dishListReducer } from './reducers/dishReducers'
 
 const reducer = combineReducers({
     userRegister: userRegisterReducer,
@@ -13,6 +13,8 @@ const reducer = combineReducers({
     restaurantDetails: restaurantDetailsReducer,
     dishCreate: dishCreateReducer,
     dishList: dishListReducer,
+    dishEdit: dishEditReducer,
+    dishDetails: dishDetaisReducer,
 })
 
 const userInfoFromStorage = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null
