@@ -23,7 +23,7 @@ app.use('/api/restaurant', restaurantRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/dish', dishRoutes)
 
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+app.use('/uploads', express.static(path.join(__dirname, '../uploads'))) 
 
 app.use(notFound)
 

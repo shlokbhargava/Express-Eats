@@ -74,7 +74,7 @@ const SellerDashboard = ({ history }) => {
                 </Modal>
             }
             <h4 className='float-start'>Edit, Create or delete any dish. <i className="fas fa-edit"></i></h4>
-            <Button onClick={addDishHandler} className='float-end'>
+            <Button onClick={addDishHandler} className='btn-dark btn-sm float-end'>
                 <i className="fas fa-plus"></i>&nbsp; Add a dish
             </Button>
             <br></br>
@@ -82,7 +82,7 @@ const SellerDashboard = ({ history }) => {
             <Row>
                 { loadingDish && <Loader /> }
                 { errorDish && <Message variant='danger'>{errorDish}</Message> }
-                { dishes && !loadingDish && dishes.length === 0 && 
+                { dishes && !loadingDish && dishes.length === 0 &&
                 <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> 
                 }
                 { dishes && dishes.map((dish) => (

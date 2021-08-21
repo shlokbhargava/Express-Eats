@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
+const Restaurant = require('../models/restaurantModel')
 const { generateToken } = require('../utils/generateToken')
 
 
@@ -57,5 +58,38 @@ exports.registerUser = asyncHandler(async (req, res) => {
     } else {
         res.status(400)
         throw new Error('Invalid user data')
+    }
+})
+
+// @desc    Update Profile
+// @route   PUT /api/users/profile
+// @access  Private user
+exports.updateProfile = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id)
+
+    let UpdatedRestaurant
+    if (user.isSeller) {
+        const restaurant = await Restaurant.findOne({ email: user.email })
+
+        restaurant.name = req.body.name || restaurant.name
+        restaurant.email = req.body.email || restaurant.email
+
+        UpdatedRestaurant = await restaurant.save()
+    }
+
+    if (user) {
+        user.name = req.body.name || user.name
+        user.email = req.body.email || user.email
+        if (req.body.password) {
+            user.password = req.body.password
+        }
+
+        const updatedUser = await user.save()
+
+        res.status(200).json(updatedUser)
+        return
+    } else {
+        res.status(404)
+        throw new Error('User not found')
     }
 })

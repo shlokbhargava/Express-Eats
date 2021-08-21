@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Breadcrumb, Button, Col, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { editDish, listDishDetails } from '../actions/dishActions'
 import FormContainer from '../components/FormContainer'
@@ -60,6 +60,8 @@ const EditDishScreen = ({ match, history }) => {
 
             const { data } = await axios.post('/api/upload', formData, config)
 
+            console.log('data', data)
+
             setImage(data)
             setUploading(false)
         } catch (error) {
@@ -82,6 +84,10 @@ const EditDishScreen = ({ match, history }) => {
 
     return (
         <>
+            <Breadcrumb className='mt-2'>
+                <Breadcrumb.Item href="/dashboard">Dashboard</Breadcrumb.Item>
+                <Breadcrumb.Item active>Edit Dish</Breadcrumb.Item>
+            </Breadcrumb>
             { loadingDish && <Loader /> }
             <h2 className='text-center mt-5'><i className="far fa-edit"></i> DISH</h2>
             <FormContainer>
@@ -99,30 +105,27 @@ const EditDishScreen = ({ match, history }) => {
                     <Row className="mb-2">
                         <Form.Group as={Col}>
                             <Form.Label>Select Dish Type</Form.Label>
-                            {/* <Form.Select as='select' value={type} onChange={(e) => setType(e.target.value)}required >
-                                <option value=''>Select Type</option>
+                            <Form.Control as='select' value={type} onChange={(e) => setType(e.target.value)} required >
+                                <option>Select Type</option>
                                 <option value='Veg'>Veg</option>
                                 <option value='Non Veg'>Non Veg</option>
-                            </Form.Select> */}
+                            </Form.Control>
                         </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Price</Form.Label>
                             <Form.Control type="number" value={cost} onChange={(e) => setCost(e.target.value)} placeholder="Min Order Value" required />
                         </Form.Group>
                     </Row>
-                    {/* <Form.Group className="mb-4">
-                        <Form.Label>Upload Image</Form.Label><br></br>
-                        <Form.Control type="text" placeholder='Enter image url' value={image} onChange={(e) => setImage(e.target.value)} />
-                        <Form.File id='image-file' custom onChange={uploadFileHandler}></Form.File>
-                        { uploading && <Loader /> }
-                    </Form.Group> */}
                     <Form.Group className="mb-4">
                         <Form.Label>Upload Image</Form.Label><br></br>
                         <Form.Control type="file" id='image-file' onChange={uploadFileHandler} />
                         { uploading && <Loader /> }
                     </Form.Group>
                                 
-                    <Button className='btn btn-dark mb-4' type='submit'>
+                    <Button className='mb-4' variant='outline-danger' type='submit'>
+                        { loading ? 'Loading…' : 'Delete' }
+                    </Button> &nbsp;&nbsp;
+                    <Button className='mb-4' variant='outline-success' type='submit'>
                         { loading ? 'Loading…' : 'Submit' }
                     </Button>
                 </Form>

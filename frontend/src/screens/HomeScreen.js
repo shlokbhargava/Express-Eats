@@ -11,7 +11,7 @@ const HomeScreen = () => {
                     <h1 className='h1-thin'>Safe Food</h1>
                     <h1 className='h1-bold mb-4'>DELIVERY</h1>
                     <p>If your application contains a large number of form groups, we recommend building a higher-level component encapsulating a complete field group that renders the label, the control, and any other necessary components. We don't provide this out-of-the-box, because the composition of those field groups is too specific to an individual application to admit a good one-size-fits-all solution.</p>
-                    <Link to='/login'><Button className='btn mt-4' variant="danger">Order Now</Button></Link>
+                    <Link to='/login'><Button className='btn mt-4' variant="outline-danger">Order Now</Button></Link>
                 </Col>
                 <Col md={6}>
                     <Image src='/images/food-delivery.png' alt='Express Eats' fluid />
