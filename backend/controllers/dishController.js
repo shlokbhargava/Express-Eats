@@ -39,6 +39,23 @@ exports.dishList = asyncHandler(async (req, res) => {
 })
 
 
+// @desc    List Dishes by Keyword
+// @route   GET /api/dish
+// @access  Public
+exports.dishesList = asyncHandler(async (req, res) => {
+
+    const keyword = req.query.keyword ? {
+        name: {
+            $regex: req.query.keyword,
+            $options: 'i'
+        }
+    } : {}
+
+    const dishes = await Dish.find({ ...keyword })
+    res.json(dishes)
+})
+
+
 // @desc    List Dish by ID
 // @route   GET /api/dish/detail/:id
 // @access  Public

@@ -1,4 +1,4 @@
-import { DISH_CREATE_FAIL, DISH_CREATE_REQUEST, DISH_CREATE_RESET, DISH_CREATE_SUCCESS, DISH_DELETE_FAIL, DISH_DELETE_REQUEST, DISH_DELETE_SUCCESS, DISH_DETAILS_FAIL, DISH_DETAILS_REQUEST, DISH_DETAILS_SUCCESS, DISH_EDIT_FAIL, DISH_EDIT_REQUEST, DISH_EDIT_RESET, DISH_EDIT_SUCCESS, DISH_LIST_FAIL, DISH_LIST_REQUEST, DISH_LIST_SUCCESS } from "../constants/dishConstants";
+import { DISHES_LIST_FAIL, DISHES_LIST_REQUEST, DISHES_LIST_SUCCESS, DISH_CREATE_FAIL, DISH_CREATE_REQUEST, DISH_CREATE_RESET, DISH_CREATE_SUCCESS, DISH_DELETE_FAIL, DISH_DELETE_REQUEST, DISH_DELETE_SUCCESS, DISH_DETAILS_FAIL, DISH_DETAILS_REQUEST, DISH_DETAILS_SUCCESS, DISH_EDIT_FAIL, DISH_EDIT_REQUEST, DISH_EDIT_RESET, DISH_EDIT_SUCCESS, DISH_LIST_FAIL, DISH_LIST_REQUEST, DISH_LIST_SUCCESS } from "../constants/dishConstants";
 
 
 export const dishCreateReducer = (state = {}, action) => {
@@ -24,6 +24,20 @@ export const dishListReducer = (state = { dishes: [] }, action) => {
         case DISH_LIST_SUCCESS:
             return { loading: false, dishes: action.payload }
         case DISH_LIST_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+
+export const dishesListReducer = (state = { dishes: [] }, action) => {
+    switch (action.type) {
+        case DISHES_LIST_REQUEST:
+            return { loading: true, dishes: [] }
+        case DISHES_LIST_SUCCESS:
+            return { loading: false, dishes: action.payload }
+        case DISHES_LIST_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

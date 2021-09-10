@@ -5,20 +5,27 @@ import { Link, Route } from 'react-router-dom'
 import { listRestaurants } from '../actions/restaurantActions'
 import SearchScreen from './SearchScreen'
 import Loader from '../components/Loader'
+import { listAllDishes } from '../actions/dishActions'
 
 const HomeScreen = ({ match, history }) => {
     const keyword = match.params.keyword
 
-    console.log(keyword)
-
     const dispatch = useDispatch()
+
+    const getStringPrice = (price) => {
+        return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
+    } 
 
     const restaurantList = useSelector((state) => state.restaurantList)
     const { loading, restaurants } = restaurantList
 
+    const dishesList = useSelector((state) => state.dishesList)
+    const { dishes } = dishesList
+
     useEffect(() => {
         if (keyword) {
             dispatch(listRestaurants(keyword))
+            dispatch(listAllDishes(keyword))
         }
     }, [dispatch, keyword])
 
@@ -36,7 +43,7 @@ const HomeScreen = ({ match, history }) => {
                 </Col>
             </Row>
             <Row className='py-3'>
-                <p className='text-center'>Search your favourite restaurant <i className="fas fa-store-alt"></i></p>
+                <p className='text-center'>Search your state, restaurant or dish <i className="fas fa-store-alt"></i></p>
             </Row>
             <Route render={({ history }) => <SearchScreen history={history} /> } />
             { loading && <Loader /> }
@@ -46,9 +53,29 @@ const HomeScreen = ({ match, history }) => {
                     <Col className='py-2' md={4} key={restaurant._id}>
                         <Card style={{ width: 'auto', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
                         <Card.Body>
-                            <Card.Title>{restaurant.name}</Card.Title>
-                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Title><b>{restaurant.name}</b></Card.Title>
                             <Card.Text>{restaurant.description}</Card.Text>
+                            <Card.Text><i className="fas fa-map-marker-alt"></i> {restaurant.state}</Card.Text>
+                            <Card.Link href="#">Card Link</Card.Link>
+                            <Card.Link href="#">Another Link</Card.Link>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+                {dishes && dishes.map((dish) => (
+                    <Col className='py-2' md={4} key={dish._id}>
+                        <Card style={{ width: 'auto', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
+                        <Card.Body>
+                            <Card.Title as='div'>
+                                <strong style={{ fontSize: '1.3rem' }}>{dish.name}</strong>
+                                { dish.type === 'Veg' ?
+                                    <img src='/images/veg.png' style={{ width: '0.9rem', height: '0.9rem'}} className='float-end' alt='Veg'></img> 
+                                :
+                                    <img src='/images/nv.png' style={{ width: '0.9rem', height: '0.9rem'}} className='float-end' alt='Non Veg'></img>
+                                }
+                            </Card.Title>
+                            <Card.Text>{dish.description}</Card.Text>
+                            <Card.Text><h4><strong>₹{getStringPrice(dish.cost)}/-</strong></h4></Card.Text>
                             <Card.Link href="#">Card Link</Card.Link>
                             <Card.Link href="#">Another Link</Card.Link>
                         </Card.Body>

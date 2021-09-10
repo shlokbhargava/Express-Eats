@@ -5,8 +5,6 @@ const SearchScreen = ({ history }) => {
 
     const [keyword, setKeyword] = useState()
 
-    console.log(keyword)
-
     const submitHandler = (e) => {
         e.preventDefault()
 
@@ -23,7 +21,7 @@ const SearchScreen = ({ history }) => {
                 <Col xs={12} md={8}>
                     <Form onSubmit={submitHandler}>
                         <InputGroup className="mb-2">
-                            <FormControl type='text' name='q' placeholder="Search for restaurants" onChange={(e) => setKeyword(e.target.value)} />
+                            <FormControl type='text' name='q' placeholder="Search for state, restaurants or dish" onChange={(e) => setKeyword(e.target.value)} />
                             <Button variant='secondary' type="submit">Search</Button>
                             <InputGroup.Text>
                                 <OverlayTrigger key='top' placement='top'

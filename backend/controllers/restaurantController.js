@@ -27,10 +27,11 @@ exports.getRestaurant = asyncHandler(async (req, res) => {
 // @access  Public
 exports.getRestaurants = asyncHandler(async (req, res) => {
     const keyword = req.query.keyword ? {
-        name: {
-            $regex: req.query.keyword,
-            $options: 'i'
-        }
+        "$or": [
+            { name: { '$regex': req.query.keyword, '$options': 'i' } },
+            { state: { '$regex': req.query.keyword, '$options': 'i' } }
+        ]
+
     } : {}
 
     const restaurants = await Restaurant.find({ ...keyword })

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { DISH_CREATE_FAIL, DISH_CREATE_REQUEST, DISH_CREATE_SUCCESS, DISH_DELETE_FAIL, DISH_DELETE_REQUEST, DISH_DELETE_SUCCESS, DISH_DETAILS_FAIL, DISH_DETAILS_REQUEST, DISH_DETAILS_SUCCESS, DISH_EDIT_FAIL, DISH_EDIT_REQUEST, DISH_EDIT_SUCCESS, DISH_LIST_FAIL, DISH_LIST_REQUEST, DISH_LIST_SUCCESS } from "../constants/dishConstants"
+import { DISHES_LIST_FAIL, DISHES_LIST_REQUEST, DISHES_LIST_SUCCESS, DISH_CREATE_FAIL, DISH_CREATE_REQUEST, DISH_CREATE_SUCCESS, DISH_DELETE_FAIL, DISH_DELETE_REQUEST, DISH_DELETE_SUCCESS, DISH_DETAILS_FAIL, DISH_DETAILS_REQUEST, DISH_DETAILS_SUCCESS, DISH_EDIT_FAIL, DISH_EDIT_REQUEST, DISH_EDIT_SUCCESS, DISH_LIST_FAIL, DISH_LIST_REQUEST, DISH_LIST_SUCCESS } from "../constants/dishConstants"
 
 
 export const createDish = (id) => async (dispatch, getState) => {
@@ -43,6 +43,25 @@ export const listDishes = (id) => async(dispatch) => {
     } catch (error) {
         dispatch({
             type: DISH_LIST_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+
+export const listAllDishes = (keyword = '') => async(dispatch) => {
+    try {
+        dispatch({ type: DISHES_LIST_REQUEST })
+
+        const { data } = await axios.get(`/api/dish?keyword=${keyword}`)
+
+        dispatch({
+            type: DISHES_LIST_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: DISHES_LIST_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }
