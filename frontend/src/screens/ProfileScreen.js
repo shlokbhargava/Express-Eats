@@ -51,7 +51,6 @@ const ProfileScreen = ({ history }) => {
     }
 
     return (
-
         <>
             <Breadcrumb className='mt-2'>
                 { userInfo && !userInfo.isSeller ? 

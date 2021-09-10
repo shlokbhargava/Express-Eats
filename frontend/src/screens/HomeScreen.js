@@ -1,9 +1,27 @@
-import React from 'react'
-import { Button, Col, Container, Image, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, Route } from 'react-router-dom'
+import { listRestaurants } from '../actions/restaurantActions'
 import SearchScreen from './SearchScreen'
+import Loader from '../components/Loader'
 
-const HomeScreen = () => {
+const HomeScreen = ({ match, history }) => {
+    const keyword = match.params.keyword
+
+    console.log(keyword)
+
+    const dispatch = useDispatch()
+
+    const restaurantList = useSelector((state) => state.restaurantList)
+    const { loading, restaurants } = restaurantList
+
+    useEffect(() => {
+        if (keyword) {
+            dispatch(listRestaurants(keyword))
+        }
+    }, [dispatch, keyword])
+
     return (
         <Container className='py-5'>
             <Row className='py-5 mb-5'>
@@ -20,7 +38,25 @@ const HomeScreen = () => {
             <Row className='py-3'>
                 <p className='text-center'>Search your favourite restaurant <i className="fas fa-store-alt"></i></p>
             </Row>
-            <SearchScreen />
+            <Route render={({ history }) => <SearchScreen history={history} /> } />
+            { loading && <Loader /> }
+            { keyword && 
+                <Row className='justify-content-center'>
+                {restaurants && restaurants.map((restaurant) => (
+                    <Col className='py-2' md={4} key={restaurant._id}>
+                        <Card style={{ width: 'auto', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
+                        <Card.Body>
+                            <Card.Title>{restaurant.name}</Card.Title>
+                                <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
+                            <Card.Text>{restaurant.description}</Card.Text>
+                            <Card.Link href="#">Card Link</Card.Link>
+                            <Card.Link href="#">Another Link</Card.Link>
+                        </Card.Body>
+                        </Card>
+                    </Col>
+                ))}
+                </Row>
+            }
         </Container>
     )
 }

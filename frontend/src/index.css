@@ -40,3 +40,8 @@ p {
   border-left: 6px solid;
   border-radius: 5px;
 }
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}

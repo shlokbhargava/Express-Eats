@@ -10,6 +10,7 @@ import SellerRegisterScreen from "./screens/SellerRegisterScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SellerDashboard from "./screens/SellerDashboard";
 import EditDishScreen from "./screens/EditDishScreen";
+import EditRestaurantScreen from "./screens/EditRestaurantScreen";
 
 const App = () => {
   return (
@@ -18,11 +19,13 @@ const App = () => {
       <main>
         <Container>
           <Route path='/' component={HomeScreen} exact />
+          <Route path='/search/:keyword' component={HomeScreen} exact />
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
           <Route path='/cart' component={CartScreen} />
           <Route path='/seller/register' component={SellerRegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
+          <Route path='/restaurant/edit' component={EditRestaurantScreen} />
           <Route path='/dashboard' component={SellerDashboard} />
           <Route path='/dish/:id/edit' component={EditDishScreen} />
         </Container>

@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import { createDish, listDishes } from '../actions/dishActions'
 import { DISH_CREATE_RESET } from '../constants/dishConstants'
 import Dish from '../components/Dish'
+import { Link } from 'react-router-dom'
 
 const SellerDashboard = ({ history }) => {
     const dispatch = useDispatch()
@@ -68,10 +69,13 @@ const SellerDashboard = ({ history }) => {
                         <strong>Call us :</strong> +91-{restaurantInfo.contact} <br></br>
                         <strong>Write us at :</strong> {restaurantInfo.email} <br></br>
                         <strong>Open till :</strong> {restaurantInfo.time}
-                        <i className="far fa-edit fa-lg float-end"></i>
+                        <Link to='/restaurant/edit'>
+                            <i className="far fa-edit fa-lg float-end text-dark"></i> 
+                        </Link>
                     </p>
                 </Col>
-                <Col md={6}>
+                <Col md={7}>
+                    <h1><Badge variant='warning'>Current Orders</Badge></h1>
                     {/* <Image src='/images/food-delivery.png' alt='Express Eats' fluid /> */}
                 </Col>
             </Row>
@@ -95,7 +99,7 @@ const SellerDashboard = ({ history }) => {
                 }
                 { errorDelete && <Message variant='danger'>{errorDelete}</Message>  }
                 { dishes && dishes.map((dish) => (
-                    <Col key={dish._id}>
+                    <Col className='flex' key={dish._id}>
                         <Dish dish={dish} />
                     </Col>
                 ))}
