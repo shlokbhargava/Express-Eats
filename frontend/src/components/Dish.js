@@ -1,9 +1,12 @@
 import React from 'react'
-import { Button, Card } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { deleteDish } from '../actions/dishActions'
 
 const Dish = ({ dish }) => {
+
+    const dispatch = useDispatch()
 
     const getStringPrice = (price) => {
         return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
@@ -11,6 +14,12 @@ const Dish = ({ dish }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+
+    const deleteHandler = (dishId) => {
+        if (window.confirm('Are you sure yu want to delete the dish')) {
+            dispatch(deleteDish(dishId))
+        }
+    }
 
     return (
 
@@ -34,12 +43,16 @@ const Dish = ({ dish }) => {
                     <span className='float-end'>
                         { userInfo && userInfo.isSeller && 
                             <>
-                                <Link to={`/dish/${dish._id}/edit`} style={{ textDecoration: 'none' }}>
-                                    <i className="far fa-edit fa-lg text-dark"></i>&nbsp;&nbsp;
-                                </Link>
-                                <Link to='/dashboard' style={{ textDecoration: 'none' }}>
-                                    <i className="far fa-trash-alt fa-lg text-danger"></i>    
-                                </Link>
+                                <OverlayTrigger placement='top' overlay={
+                                    <Tooltip>Edit</Tooltip>}>
+                                    <Link to={`/dish/${dish._id}/edit`} style={{ textDecoration: 'none' }}>
+                                        <i className="far fa-edit fa-lg text-dark"></i>&nbsp;&nbsp;
+                                    </Link>
+                                </OverlayTrigger>
+                                <OverlayTrigger placement='top' overlay={
+                                    <Tooltip>Delete</Tooltip>}>
+                                    <i className="far fa-trash-alt fa-lg text-danger" type="button" onClick={() => deleteHandler(dish._id)}></i>
+                                </OverlayTrigger>
                             </>
 
                         }

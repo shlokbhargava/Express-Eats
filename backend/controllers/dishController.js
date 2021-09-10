@@ -80,3 +80,22 @@ exports.editDish = asyncHandler(async (req, res) => {
         throw new Error('Dish not found')
     }
 })
+
+
+// @desc    Delete Dish
+// @route   DELETE /api/dish/:id/delete
+// @access  Private seller
+exports.deleteDish = asyncHandler(async (req, res) => {
+
+    const dish = await Dish.findById(req.params.id)
+    
+    if (dish) {
+        await dish.remove()
+        res.json({ 
+            message: 'Dish Deleted'
+        })
+    } else {
+        res.status(404)
+        throw new Error('Dish not found')
+    }
+})

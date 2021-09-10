@@ -26,7 +26,6 @@ const EditDishScreen = ({ match, history }) => {
     const dishEdit = useSelector((state) => state.dishEdit)
     const { loading, success, error } = dishEdit
 
-
     useEffect(() => {
         if (success) {
             dispatch({ type: DISH_EDIT_RESET })
@@ -122,9 +121,6 @@ const EditDishScreen = ({ match, history }) => {
                         { uploading && <Loader /> }
                     </Form.Group>
                                 
-                    <Button className='mb-4' variant='outline-danger' type='submit'>
-                        { loading ? 'Loading…' : 'Delete' }
-                    </Button> &nbsp;&nbsp;
                     <Button className='mb-4' variant='outline-success' type='submit'>
                         { loading ? 'Loading…' : 'Submit' }
                     </Button>

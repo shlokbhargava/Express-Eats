@@ -24,6 +24,9 @@ const SellerDashboard = ({ history }) => {
     const dishList = useSelector((state) => state.dishList)
     const { loading: loadingDish, error: errorDish, dishes } = dishList
 
+    const dishDelete = useSelector((state) => state.dishDelete)
+    const { error: errorDelete, success: successDelete } = dishDelete
+
     useEffect(() => {
         dispatch({ type: DISH_CREATE_RESET })
             
@@ -36,8 +39,11 @@ const SellerDashboard = ({ history }) => {
         if (successCreate) {
             history.push(`/dish/${dish._id}/edit`)
         }
+        if (successDelete) {
+            window.alert('Dish Deleted!')
+        }
         dispatch(listDishes(restaurantInfo._id))
-    }, [userInfo, history, restaurantInfo, successCreate, dispatch, dish])
+    }, [userInfo, history, restaurantInfo, successCreate, successDelete, dispatch, dish])
 
     const addDishHandler = () => {
         setSmShow(true)
@@ -53,14 +59,16 @@ const SellerDashboard = ({ history }) => {
                     <h3 className='h1-thin' style={{ fontSize: '2.5rem' }}>{restaurantInfo.name}</h3>
                     <p>
                         {restaurantInfo.description} <br></br>
-                        Minimum Order :  ₹{restaurantInfo.minOrderValue} <br></br>
+                        <strong>Minimum Order :</strong>  ₹{restaurantInfo.minOrderValue} <br></br>
                         <Badge className='success-badge'>{ restaurantInfo.cod && 'Cash on delivery'}</Badge> &nbsp;
                         <Badge className='success-badge'>{ restaurantInfo.onlinePayment && 'Online Payment' }</Badge>
                     </p>
                     <p>
-                        Deliver in : {restaurantInfo.state}, {restaurantInfo.country} <br></br>
-                        Call us : +91-{restaurantInfo.contact} <br></br>
-                        Open till : {restaurantInfo.time}
+                        <strong>Deliver in :</strong> {restaurantInfo.state}, {restaurantInfo.country} <br></br>
+                        <strong>Call us :</strong> +91-{restaurantInfo.contact} <br></br>
+                        <strong>Write us at :</strong> {restaurantInfo.email} <br></br>
+                        <strong>Open till :</strong> {restaurantInfo.time}
+                        <i className="far fa-edit fa-lg float-end"></i>
                     </p>
                 </Col>
                 <Col md={6}>
@@ -73,7 +81,7 @@ const SellerDashboard = ({ history }) => {
                     <Loader />
                 </Modal>
             }
-            <h4 className='float-start'>Edit, Create or delete any dish. <i className="fas fa-edit"></i></h4>
+            <h4 className='float-start'>Edit, Create or delete any dish.</h4>
             <Button onClick={addDishHandler} className='btn-dark btn-sm float-end'>
                 <i className="fas fa-plus"></i>&nbsp; Add a dish
             </Button>
@@ -85,6 +93,7 @@ const SellerDashboard = ({ history }) => {
                 { dishes && !loadingDish && dishes.length === 0 &&
                 <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> 
                 }
+                { errorDelete && <Message variant='danger'>{errorDelete}</Message>  }
                 { dishes && dishes.map((dish) => (
                     <Col key={dish._id}>
                         <Dish dish={dish} />
