@@ -51,7 +51,7 @@ exports.dishesList = asyncHandler(async (req, res) => {
         }
     } : {}
 
-    const dishes = await Dish.find({ ...keyword })
+    const dishes = await Dish.find({ ...keyword }).populate('restaurant')
     res.json(dishes)
 })
 

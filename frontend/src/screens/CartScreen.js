@@ -23,7 +23,7 @@ const CartScreen = () => {
                     <Message>
                         Your Cart is empty
                         <Link to='/'> Browse Restaurants <i className="fas fa-arrow-circle-right"></i></Link>
-                    </Message> : 
+                    </Message>
                     {/* <ListGroup>
                         { cartItems.map(item => (
                             <ListGroupItem key={item.product}>
