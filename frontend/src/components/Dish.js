@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button, Card, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartAction'
@@ -7,6 +7,9 @@ import { deleteDish } from '../actions/dishActions'
 
 const Dish = ({ dish }) => {
     const [qty, setQty] = useState()
+    const [show, setShow] = useState(false)
+    const handleClose = () => setShow(false)
+    const handleShow = () => setShow(true)
 
     const dispatch = useDispatch()
 
@@ -16,14 +19,47 @@ const Dish = ({ dish }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
     
     useEffect(() => {
         if (qty === 0) {
-            dispatch(removeFromCart(dish._id))
+            if (dish.restaurant === cartItems[0].restaurant) {
+                dispatch(removeFromCart(dish._id))
+            }
         } 
 
         if (qty > 0) {
-            dispatch(addToCart(dish._id, qty))
+            if (dish.restaurant !== cartItems[0].restaurant) {
+                <>
+                    {handleShow && 
+                        <Modal
+                        show={show}
+                        onHide={handleClose}
+                        backdrop="static"
+                        keyboard={false}
+                        >
+                            <Modal.Header closeButton>
+                            <Modal.Title>Modal title</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                            I will not close if you click outside me. Don't even try to press
+                            escape key.
+                            </Modal.Body>
+                            <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                            <Button variant="primary">Understood</Button>
+                            </Modal.Footer>
+                        </Modal>
+                    }
+                    
+                </>
+            } else {
+                dispatch(addToCart(dish._id, qty))
+            }
         }
     },[qty, dish, dispatch])
 

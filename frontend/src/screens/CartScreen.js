@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Button, Card, Col, Container, FormControl, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
-import { addToCart } from '../actions/cartAction'
+import { addToCart, removeFromCart } from '../actions/cartAction'
 
 const CartScreen = ({ match, location, history }) => {
     const dishId = match.params.id
@@ -16,29 +16,29 @@ const CartScreen = ({ match, location, history }) => {
         return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
     }  
 
-    const getDeliveryTime = () => {
-        const day = new Date()
-        var min = day.getMinutes() + 30
-        var hr = day.getHours() 
+    // const getDeliveryTime = () => {
+    //     const day = new Date()
+    //     var min = day.getMinutes() + 30
+    //     var hr = day.getHours() 
 
-        if (min >= 60) {
-            min -= 60
-        }
+    //     if (min >= 60) {
+    //         min -= 60
+    //     }
 
-        if (hr <= 9) {
-            var newHr = '0' + hr
-        }
+    //     if (hr <= 9) {
+    //         var newHr = '0' + hr
+    //     }
         
-        var time = newHr + ":" + min
-        time = time.toString().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    //     var time = newHr + ":" + min
+    //     time = time.toString().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
-        if (time.length > 1) {
-            time = time.slice (1)
-            time[5] = +time[0] < 12 ? ' AM' : ' PM'
-            time[0] = +time[0] % 12 || 12
-        }
-        return time.join('');
-    }
+    //     if (time.length > 1) {
+    //         time = time.slice (1)
+    //         time[5] = +time[0] < 12 ? ' AM' : ' PM'
+    //         time[0] = +time[0] % 12 || 12
+    //     }
+    //     return time.join('');
+    // }
     
     const cart = useSelector((state) => state.cart)
     const { cartItems } = cart
@@ -50,10 +50,6 @@ const CartScreen = ({ match, location, history }) => {
     }, [dishId, dispatch, qty])
 
     const checkoutHandler = () => {
-
-    }
-
-    const removeFromCartHandler = () => {
 
     }
 
@@ -72,24 +68,24 @@ const CartScreen = ({ match, location, history }) => {
                             <ListGroupItem key={item.dish}>
                                 <Row>
                                     <Col md={2}>
-                                        <Image src={item.image} alt={item.name} fluid rounded />
+                                        <Image style={{ height: '100%' }} src={item.image} alt={item.name} fluid rounded />
                                     </Col>
-                                    <Col md={3}>
+                                    <Col md={4}>
                                         <strong>{item.name}</strong><br></br>
                                         {item.description}
                                     </Col>
-                                    <Col md={2}>
+                                    <Col md={1}>
                                         ₹{getStringPrice(item.price)}
                                     </Col>
                                     <Col md={2}>
-                                        {/* <Button variant="light" onClick={() => removeFromCartHandler(item.product)}> <i className="fas fa-trash"></i> </Button> */}
-                                        <i type='button' className="opt fas fa-minus"></i> &nbsp;
+                                        {item.qty === 0 && dispatch(removeFromCart(item.dish))}
+                                        <i type='button' className="opt fas fa-minus" onClick={() => dispatch(addToCart(item.dish, item.qty-1))}></i> &nbsp;
                                         <Button className='btn-sm' variant='outline-#e67818' disabled>
                                             <span>{item.qty}</span>
                                         </Button> &nbsp;
-                                        <i type='button' className="opt fas fa-plus"></i>
+                                        <i type='button' className="opt fas fa-plus" onClick={() => dispatch(addToCart(item.dish, item.qty+1))}></i>
                                     </Col>
-                                    <Col>
+                                    <Col md={3}>
                                         {item.qty}&nbsp; x &nbsp;₹{getStringPrice(item.price)}&nbsp; = &nbsp;₹{getStringPrice(item.qty*item.price)}
                                     </Col>
                                 </Row>
@@ -104,7 +100,7 @@ const CartScreen = ({ match, location, history }) => {
                     <br></br>
                     <Card>
                         <ListGroup variant='flush'>
-                            <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice(cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)))) }</b>
+                            <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
                             </Card.Header>
                             <ListGroupItem>
                                 <Row>
@@ -115,7 +111,7 @@ const CartScreen = ({ match, location, history }) => {
                             <ListGroupItem>
                                 <Row>
                                     <Col>Packaging Charges : </Col>
-                                    <Col>₹{ getStringPrice(0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)) }</Col>
+                                    <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
                                 </Row>
                             </ListGroupItem>
                             <ListGroupItem>

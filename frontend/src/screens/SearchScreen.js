@@ -19,7 +19,7 @@ const SearchScreen = ({ history }) => {
 
     const getLocation = () => {
         const showPosition = async (position) => {
-            const loc = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyArhcWWtFKk633cEvjvDhWoD974dyk02iY`)
+            const loc = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=`)
             
             console.log(loc)
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, Col, Row } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
+import { Button, Card, Col, Modal, Row } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartAction'
 
 const Dishes = ({ history, dish }) => {
     const [qty, setQty] = useState()
+    const [show, setShow] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -12,15 +13,42 @@ const Dishes = ({ history, dish }) => {
         return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
     }  
 
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
+
     useEffect(() => {
         if (qty === 0) {
-            dispatch(removeFromCart(dish._id))
+            if (dish.restaurant === cartItems[0].restaurant) {
+                dispatch(removeFromCart(dish._id))
+            }
         }
 
         if (qty > 0) {
-            dispatch(addToCart(dish._id, qty))
+            if (dish.restaurant !== cartItems[0].restaurant) {
+               <>
+                {setShow(true)}
+                {show &&  
+               <Modal backdrop="static">
+                    <Modal.Header closeButton>
+                    <Modal.Title>Modal title</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    I will not close if you click outside me. Don't even try to press
+                    escape key.
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary">
+                        Close
+                    </Button>
+                    <Button variant="primary">Understood</Button>
+                    </Modal.Footer>
+                </Modal>}
+               </>
+            } else {
+                dispatch(addToCart(dish._id, qty))
+            }
         }
-    }, [dispatch, qty, dish])
+    }, [dispatch, qty, dish, cartItems, show])
 
     return (
         <Card style={{ width: 'auto', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
