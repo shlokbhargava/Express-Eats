@@ -1,53 +1,96 @@
-import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Card, Col, Container, FormControl, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
+import { addToCart } from '../actions/cartAction'
 
-const CartScreen = () => {
+const CartScreen = ({ match, location, history }) => {
+    const dishId = match.params.id
+
+    const qty = location.search ? Number(location.search.split('=')[1]) : 1
+
+    const dispatch = useDispatch()
+
+    const getStringPrice = (price) => {
+        return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
+    }  
+
+    const getDeliveryTime = () => {
+        const day = new Date()
+        var min = day.getMinutes() + 30
+        var hr = day.getHours() 
+
+        if (min >= 60) {
+            min -= 60
+        }
+
+        if (hr <= 9) {
+            var newHr = '0' + hr
+        }
+        
+        var time = newHr + ":" + min
+        time = time.toString().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) {
+            time = time.slice (1)
+            time[5] = +time[0] < 12 ? ' AM' : ' PM'
+            time[0] = +time[0] % 12 || 12
+        }
+        return time.join('');
+    }
+    
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
+
+    useEffect(() => {
+        if (dishId) {
+            dispatch(addToCart(dishId, qty))
+        }
+    }, [dishId, dispatch, qty])
+
+    const checkoutHandler = () => {
+
+    }
+
+    const removeFromCartHandler = () => {
+
+    }
+
     return (
         <Container className='mt-5'>
             <Row> 
                 <Col md={8}>
-                    {/* { 
-                        cartItems.reduce((acc, item) => acc + item.qty*item.price, 0) >= 500 ? "" : cartItems.length === 0 ? "" : 
-                        <Alert variant="dark">
-                            <Alert.Heading>Get Free Delivery!</Alert.Heading>
-                            <Message variant="dark">
-                                Add items worth <b>₹{(500 - cartItems.reduce((acc, item) => acc + item.qty*item.price, 0).toFixed(2)).toFixed(2)}</b> more for free delivery 
-                                &nbsp;<Link to='/'> Add Items <i className="fas fa-arrow-circle-right"></i></Link>
-                            </Message>
-                        </Alert>
-                    } */}
-                    <h1>Your Food Cart</h1>
-                    {/* { cartItems.length === 0 ?  */}
+                    { cartItems.length === 0 ? 
                     <Message>
                         Your Cart is empty
-                        <Link to='/'> Browse Restaurants <i className="fas fa-arrow-circle-right"></i></Link>
-                    </Message>
-                    {/* <ListGroup>
+                        <Link to='/'> Browse your food <i className="fas fa-arrow-circle-right"></i></Link>
+                    </Message> : 
+                    <ListGroup>
+                        <h1>{cartItems[0].restaurant.name}</h1>
                         { cartItems.map(item => (
-                            <ListGroupItem key={item.product}>
+                            <ListGroupItem key={item.dish}>
                                 <Row>
                                     <Col md={2}>
                                         <Image src={item.image} alt={item.name} fluid rounded />
                                     </Col>
                                     <Col md={3}>
-                                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                                        <strong>{item.name}</strong><br></br>
+                                        {item.description}
                                     </Col>
                                     <Col md={2}>
                                         ₹{getStringPrice(item.price)}
                                     </Col>
                                     <Col md={2}>
-                                        <FormControl as='select' value={item.qty} onChange={(e) => dispatch(addToCart(item.product, Number(e.target.value)))}>
-                                            {[...Array(item.countInStock).keys()].map((x) => (
-                                                <option key={x + 1} value={x + 1}>
-                                                    {x + 1}
-                                                </option>
-                                            ))}
-                                        </FormControl>
+                                        {/* <Button variant="light" onClick={() => removeFromCartHandler(item.product)}> <i className="fas fa-trash"></i> </Button> */}
+                                        <i type='button' className="opt fas fa-minus"></i> &nbsp;
+                                        <Button className='btn-sm' variant='outline-#e67818' disabled>
+                                            <span>{item.qty}</span>
+                                        </Button> &nbsp;
+                                        <i type='button' className="opt fas fa-plus"></i>
                                     </Col>
-                                    <Col md={2}>
-                                        <Button variant="light" onClick={() => removeFromCartHandler(item.product)}> <i className="fas fa-trash"></i> </Button>
+                                    <Col>
+                                        {item.qty}&nbsp; x &nbsp;₹{getStringPrice(item.price)}&nbsp; = &nbsp;₹{getStringPrice(item.qty*item.price)}
                                     </Col>
                                 </Row>
                             </ListGroupItem>
@@ -61,7 +104,7 @@ const CartScreen = () => {
                     <br></br>
                     <Card>
                         <ListGroup variant='flush'>
-                            <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice(cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)) }</b>
+                            <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice(cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)))) }</b>
                             </Card.Header>
                             <ListGroupItem>
                                 <Row>
@@ -71,21 +114,30 @@ const CartScreen = () => {
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Row>
-                                    <Col>Shipping Charges : </Col>
-                                    <Col>{ cartItems.reduce((acc, item) => acc + item.qty*item.price, 0) >= 500 ? "FREE" : cartItems.length === 0 ? "" : "₹50.00"}</Col>
+                                    <Col>Packaging Charges : </Col>
+                                    <Col>₹{ getStringPrice(0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)) }</Col>
                                 </Row>
                             </ListGroupItem>
                             <ListGroupItem>
                                 <Row>
-                                    <Col>Delivery By : </Col>
-                                    <Col>{cartItems.length === 0 ? "" : getDeliveryDate(3)}</Col>
+                                    <Col>Delivery Charges : </Col>
+                                    <Col>₹50.00</Col>
                                 </Row>
                             </ListGroupItem>
                             <ListGroupItem>
-                                <Button variant="primary" disabled={cartItems.length === 0} onClick={checkoutHandler} block>Proceed to Checkout</Button>
+                                <Row>
+                                    <Col>Delivery In : </Col>
+                                    <Col>{cartItems.length === 0 ? "" : '30 minutes'}</Col>
+                                </Row>
+                            </ListGroupItem>
+                            <ListGroupItem>
+                                <div className="d-grid gap-2">
+                                    <Button variant="dark" disabled={cartItems.length === 0} onClick={checkoutHandler}>Proceed to Checkout
+                                    </Button>
+                                </div>
                             </ListGroupItem>
                         </ListGroup>
-                    </Card> */}
+                    </Card>
                 </Col>
             </Row>
         </Container>

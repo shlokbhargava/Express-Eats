@@ -45,3 +45,9 @@ p {
   display: flex;
   justify-content: space-between;
 }
+
+.opt {
+  font-size: small;
+  border: 1px solid black;
+  padding: 2px;
+}

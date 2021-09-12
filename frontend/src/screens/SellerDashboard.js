@@ -12,7 +12,8 @@ import Restaurant from '../components/Restaurant'
 const SellerDashboard = ({ history }) => {
     const dispatch = useDispatch()
 
-    const [smShow, setSmShow] = useState(false);
+    const [smShow, setSmShow] = useState(false)
+    const [alert, setAlert] = useState(false);
 
     const restaurantDetails = useSelector((state) => state.restaurantDetails)
     const { restaurantInfo, loading, error } = restaurantDetails
@@ -42,10 +43,15 @@ const SellerDashboard = ({ history }) => {
             history.push(`/dish/${dish._id}/edit`)
         }
         if (successDelete) {
-            window.alert('Dish Deleted!')
+            setAlert(true)
+            if (alert) {
+                window.alert('Dish Deleted!')
+                setAlert(false)
+            }
+            
         }
         dispatch(listDishes(restaurantInfo._id))
-    }, [userInfo, history, restaurantInfo, successCreate, successDelete, dispatch, dish])
+    }, [userInfo, history, restaurantInfo, successCreate, successDelete, dispatch, dish, alert])
 
     const addDishHandler = () => {
         setSmShow(true)

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Container, Dropdown, DropdownButton, Nav, Navbar } from 'react-bootstrap'
+import { Badge, Button, Container, Dropdown, DropdownButton, Nav, Navbar } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { logout } from '../actions/userActions'
@@ -9,6 +9,9 @@ const Header = () => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -43,7 +46,7 @@ const Header = () => {
                     <Link to='/cart'>
                         <Button className='btn btn-dark'>
                             <i className="fas fa-shopping-cart"></i>
-                            {/* <Badge variant="dark">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge> */}
+                            <Badge variant="dark">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge>
                         </Button> 
                     </Link>
                 </Nav>

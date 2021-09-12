@@ -60,7 +60,7 @@ exports.dishesList = asyncHandler(async (req, res) => {
 // @route   GET /api/dish/detail/:id
 // @access  Public
 exports.dishDetail = asyncHandler(async (req, res) => {
-    const dish = await Dish.findById(req.params.id)
+    const dish = await Dish.findById(req.params.id).populate('restaurant')
     
     if (dish) {
         res.status(200).json(dish)

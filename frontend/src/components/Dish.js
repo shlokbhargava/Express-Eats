@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Card, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { addToCart, removeFromCart } from '../actions/cartAction'
 import { deleteDish } from '../actions/dishActions'
 
 const Dish = ({ dish }) => {
+    const [qty, setQty] = useState()
 
     const dispatch = useDispatch()
 
@@ -14,6 +16,16 @@ const Dish = ({ dish }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
+    
+    useEffect(() => {
+        if (qty === 0) {
+            dispatch(removeFromCart(dish._id))
+        } 
+
+        if (qty > 0) {
+            dispatch(addToCart(dish._id, qty))
+        }
+    },[qty, dish, dispatch])
 
     const deleteHandler = (dishId) => {
         if (window.confirm('Are you sure yu want to delete the dish')) {
@@ -56,11 +68,23 @@ const Dish = ({ dish }) => {
 
                         }
                         { (!userInfo || !userInfo.isSeller) &&
-                            <Button className='btn-sm float-end' variant='outline-warning'>Add + </Button>
-                            // <>
-                            //     <i type='button' className="fas fa-minus text-dark fa-lg"></i>&emsp;&emsp;
-                            //     <i type='button' className="fas fa-plus text-dark fa-lg"></i>
-                            // </> 
+                            <>
+                                { !qty || (qty && qty === 0) ? 
+                                    <Button className='btn-sm float-end' variant='outline-warning' onClick={() => setQty(1)}>Add + </Button>
+                                :
+                                    <>
+                                        <Button className='btn-sm' variant='warning' onClick={() => setQty(qty-1)}>
+                                            <i type='button' className="fas fa-minus fa-lg"></i>
+                                        </Button> &nbsp;
+                                        <Button className='btn-sm' variant='outline-#e67818' disabled>
+                                            <span>{qty}</span>
+                                        </Button> &nbsp;
+                                        <Button className='btn-sm' variant='warning' onClick={() => setQty(qty+1)}>
+                                            <i type='button' className="fas fa-plus fa-lg"></i>
+                                        </Button>
+                                    </>
+                                }
+                            </> 
                         }
                     </span>
                 </div>
