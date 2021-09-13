@@ -43,12 +43,16 @@ const Header = () => {
                     </>
                     }
 
-                    <Link to='/cart'>
-                        <Button className='btn btn-dark'>
-                            <i className="fas fa-shopping-cart"></i>
-                            <Badge variant="dark">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge>
-                        </Button> 
-                    </Link>
+                    { !userInfo || (userInfo && !userInfo.isSeller) ?
+                        <Link to='/cart'>
+                            <Button className='btn btn-dark'>
+                                <i className="fas fa-shopping-cart"></i>
+                                <Badge variant="dark">{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge>
+                            </Button> 
+                        </Link>
+                        :
+                        ""
+                    }
                 </Nav>
                 {/* <Link to=''></Link> */}
             </Container>

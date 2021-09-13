@@ -1,8 +1,12 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { Badge, Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const Restaurant = ({ restaurant }) => {
+
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
 
     const getTime = (time) => {
         time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
@@ -31,9 +35,13 @@ const Restaurant = ({ restaurant }) => {
                         <strong>Call us :</strong> +91-{restaurant.contact} <br></br>
                         <strong>Write us at :</strong> {restaurant.email} <br></br>
                         <strong>Open till :</strong> {getTime(restaurant.time)}
-                        <Link to='/restaurant/edit'>
-                            <i className="far fa-edit fa-lg float-end text-dark"></i> 
-                        </Link>
+                        { (userInfo) || (userInfo && !userInfo.isSeller) ?
+                            <Link to='/restaurant/edit'>
+                                <i className="far fa-edit fa-lg float-end text-dark"></i> 
+                            </Link>
+                        :
+                            ""
+                        }
                     </p>
                 </Col>
                 <Col md={7}>

@@ -4,6 +4,7 @@ import { Button, Card, Col, Container, FormControl, Image, ListGroup, ListGroupI
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartAction'
+import Progress from '../components/Progress'
 
 const CartScreen = ({ match, location, history }) => {
     const dishId = match.params.id
@@ -54,89 +55,92 @@ const CartScreen = ({ match, location, history }) => {
     }
 
     return (
-        <Container className='mt-5'>
-            <Row> 
-                <Col md={8}>
-                    { cartItems.length === 0 ? 
-                    <Message>
-                        Your Cart is empty
-                        <Link to='/'> Browse your food <i className="fas fa-arrow-circle-right"></i></Link>
-                    </Message> : 
-                    <ListGroup>
-                        <h1>{cartItems[0].restaurant.name}</h1>
-                        { cartItems.map(item => (
-                            <ListGroupItem key={item.dish}>
-                                <Row>
-                                    <Col md={2}>
-                                        <Image style={{ height: '100%' }} src={item.image} alt={item.name} fluid rounded />
-                                    </Col>
-                                    <Col md={4}>
-                                        <strong>{item.name}</strong><br></br>
-                                        {item.description}
-                                    </Col>
-                                    <Col md={1}>
-                                        ₹{getStringPrice(item.price)}
-                                    </Col>
-                                    <Col md={2}>
-                                        {item.qty === 0 && dispatch(removeFromCart(item.dish))}
-                                        <i type='button' className="opt fas fa-minus" onClick={() => dispatch(addToCart(item.dish, item.qty-1))}></i> &nbsp;
-                                        <Button className='btn-sm' variant='outline-#e67818' disabled>
-                                            <span>{item.qty}</span>
-                                        </Button> &nbsp;
-                                        <i type='button' className="opt fas fa-plus" onClick={() => dispatch(addToCart(item.dish, item.qty+1))}></i>
-                                    </Col>
-                                    <Col md={3}>
-                                        {item.qty}&nbsp; x &nbsp;₹{getStringPrice(item.price)}&nbsp; = &nbsp;₹{getStringPrice(item.qty*item.price)}
-                                    </Col>
-                                </Row>
-                            </ListGroupItem>
-                        )) }
-                    </ListGroup>
-                    }
-                </Col>
-                
-                <Col md={4}>
-                    <br></br>
-                    <br></br>
-                    <Card>
-                        <ListGroup variant='flush'>
-                            <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
-                            </Card.Header>
-                            <ListGroupItem>
-                                <Row>
-                                    <Col>Quantity : </Col>
-                                    <Col>( {cartItems.reduce((acc, item) => acc + item.qty, 0)} items )</Col>
-                                </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
-                                    <Col>Packaging Charges : </Col>
-                                    <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
-                                </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
-                                    <Col>Delivery Charges : </Col>
-                                    <Col>₹50.00</Col>
-                                </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <Row>
-                                    <Col>Delivery In : </Col>
-                                    <Col>{cartItems.length === 0 ? "" : '30 minutes'}</Col>
-                                </Row>
-                            </ListGroupItem>
-                            <ListGroupItem>
-                                <div className="d-grid gap-2">
-                                    <Button variant="dark" disabled={cartItems.length === 0} onClick={checkoutHandler}>Proceed to Checkout
-                                    </Button>
-                                </div>
-                            </ListGroupItem>
+        <>
+            <Progress />
+            <Container className='mt-5'>
+                <Row> 
+                    <Col md={8}>
+                        { cartItems.length === 0 ? 
+                        <Message>
+                            Your Cart is empty
+                            <Link to='/'> Browse your food <i className="fas fa-arrow-circle-right"></i></Link>
+                        </Message> : 
+                        <ListGroup>
+                            <h1>{cartItems[0].restaurant.name}</h1>
+                            { cartItems.map(item => (
+                                <ListGroupItem key={item.dish}>
+                                    <Row>
+                                        <Col md={2}>
+                                            <Image style={{ height: '100%' }} src={item.image} alt={item.name} fluid rounded />
+                                        </Col>
+                                        <Col md={4}>
+                                            <strong>{item.name}</strong><br></br>
+                                            {item.description}
+                                        </Col>
+                                        <Col md={1}>
+                                            ₹{getStringPrice(item.price)}
+                                        </Col>
+                                        <Col md={2}>
+                                            {item.qty === 0 && dispatch(removeFromCart(item.dish))}
+                                            <i type='button' className="opt fas fa-minus" onClick={() => dispatch(addToCart(item.dish, item.qty-1))}></i> &nbsp;
+                                            <Button className='btn-sm' variant='outline-#e67818' disabled>
+                                                <span>{item.qty}</span>
+                                            </Button> &nbsp;
+                                            <i type='button' className="opt fas fa-plus" onClick={() => dispatch(addToCart(item.dish, item.qty+1))}></i>
+                                        </Col>
+                                        <Col md={3}>
+                                            {item.qty}&nbsp; x &nbsp;₹{getStringPrice(item.price)}&nbsp; = &nbsp;₹{getStringPrice(item.qty*item.price)}
+                                        </Col>
+                                    </Row>
+                                </ListGroupItem>
+                            )) }
                         </ListGroup>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+                        }
+                    </Col>
+                    
+                    <Col md={4}>
+                        <br></br>
+                        <br></br>
+                        <Card>
+                            <ListGroup variant='flush'>
+                                <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
+                                </Card.Header>
+                                <ListGroupItem>
+                                    <Row>
+                                        <Col>Quantity : </Col>
+                                        <Col>( {cartItems.reduce((acc, item) => acc + item.qty, 0)} items )</Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row>
+                                        <Col>Packaging Charges : </Col>
+                                        <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row>
+                                        <Col>Delivery Charges : </Col>
+                                        <Col>₹50.00</Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row>
+                                        <Col>Delivery In : </Col>
+                                        <Col>{cartItems.length === 0 ? "" : '30 minutes'}</Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <div className="d-grid gap-2">
+                                        <Button variant="dark" disabled={cartItems.length === 0} onClick={checkoutHandler}>Proceed to Checkout
+                                        </Button>
+                                    </div>
+                                </ListGroupItem>
+                            </ListGroup>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }
 
