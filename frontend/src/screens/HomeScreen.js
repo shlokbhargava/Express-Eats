@@ -52,11 +52,11 @@ const HomeScreen = ({ match, history }) => {
             <Route render={({ history }) => <SearchScreen history={history} /> } />
             { loading && <Loader /> }
             { keyword && 
-                <Row className='justify-content-center'>
+            <Row className='justify-content-center'>
                 { restaurants && restaurants.length === 0 && dishes.length === 0 && <Message variant='secondary'>{'No search results found....'}</Message> }
                 {restaurants && restaurants.map((restaurant) => (
-                    <Col className='py-3' md={4} key={restaurant._id}>
-                        <Card style={{ width: 'auto', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
+                    <Col className='py-3 flex' key={restaurant._id}>
+                        <Card style={{ width: '25rem', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
                             <Card.Body>
                             <Card.Title><b>{restaurant.name}</b></Card.Title>
                             <Card.Text>{restaurant.description}</Card.Text>
@@ -78,11 +78,11 @@ const HomeScreen = ({ match, history }) => {
                 ))}
 
                 {dishes && dishes.map((dish) => (
-                    <Col className='py-2' md={4} key={dish._id}>
+                    <Col className='py-2 flex justify-content-center' key={dish._id}>
                         <Dishes dish={dish} />
                     </Col>
                 ))}
-                </Row>
+            </Row>
             }
         </Container>
     )

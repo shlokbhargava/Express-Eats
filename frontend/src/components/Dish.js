@@ -6,62 +6,38 @@ import { addToCart, removeFromCart } from '../actions/cartAction'
 import { deleteDish } from '../actions/dishActions'
 
 const Dish = ({ dish }) => {
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
+
     const [qty, setQty] = useState()
-    const [show, setShow] = useState(false)
-    const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
+    const [show, setShow] = useState(true)
 
     const dispatch = useDispatch()
+
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+    
+    useEffect(() => {
+        if (show) {
+            if (cartItems.map((x) => x.dish.toString() === dish._id.toString())) {
+                cartItems.map((x) => x.dish.toString() === dish._id.toString() && setQty(x.qty))
+            }
+            setShow(false)
+        }
+
+        if (qty === 0) {
+            dispatch(removeFromCart(dish._id))
+        } 
+    },[qty, dish, dispatch, show, cartItems])
 
     const getStringPrice = (price) => {
         return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
     }    
 
-    const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
-
-    const cart = useSelector((state) => state.cart)
-    const { cartItems } = cart
-    
-    useEffect(() => {
-        if (qty === 0) {
-            if (dish.restaurant === cartItems[0].restaurant) {
-                dispatch(removeFromCart(dish._id))
-            }
-        } 
-
-        if (qty > 0) {
-            if (dish.restaurant !== cartItems[0].restaurant) {
-                <>
-                    {handleShow && 
-                        <Modal
-                        show={show}
-                        onHide={handleClose}
-                        backdrop="static"
-                        keyboard={false}
-                        >
-                            <Modal.Header closeButton>
-                            <Modal.Title>Modal title</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                            I will not close if you click outside me. Don't even try to press
-                            escape key.
-                            </Modal.Body>
-                            <Modal.Footer>
-                            <Button variant="secondary" onClick={handleClose}>
-                                Close
-                            </Button>
-                            <Button variant="primary">Understood</Button>
-                            </Modal.Footer>
-                        </Modal>
-                    }
-                    
-                </>
-            } else {
-                dispatch(addToCart(dish._id, qty))
-            }
-        }
-    },[qty, dish, dispatch])
+    const updateQtyInCart = (qty) => {
+        setQty(qty)
+        dispatch(addToCart(dish._id, qty))
+    }
 
     const deleteHandler = (dishId) => {
         if (window.confirm('Are you sure yu want to delete the dish')) {
@@ -106,16 +82,16 @@ const Dish = ({ dish }) => {
                         { (!userInfo || !userInfo.isSeller) &&
                             <>
                                 { !qty || (qty && qty === 0) ? 
-                                    <Button className='btn-sm float-end' variant='outline-warning' onClick={() => setQty(1)}>Add + </Button>
+                                    <Button className='btn-sm float-end' variant='outline-warning' onClick={() => updateQtyInCart(1)}>Add + </Button>
                                 :
                                     <>
-                                        <Button className='btn-sm' variant='warning' onClick={() => setQty(qty-1)}>
+                                        <Button className='btn-sm' variant='warning' onClick={() => updateQtyInCart(qty-1)}>
                                             <i type='button' className="fas fa-minus fa-lg"></i>
                                         </Button> &nbsp;
                                         <Button className='btn-sm' variant='outline-#e67818' disabled>
                                             <span>{qty}</span>
                                         </Button> &nbsp;
-                                        <Button className='btn-sm' variant='warning' onClick={() => setQty(qty+1)}>
+                                        <Button className='btn-sm' variant='warning' onClick={() => updateQtyInCart(qty+1)}>
                                             <i type='button' className="fas fa-plus fa-lg"></i>
                                         </Button>
                                     </>
