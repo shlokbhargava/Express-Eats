@@ -6,6 +6,7 @@ import { sellerRegisterReducer } from './reducers/sellerReducers'
 import { restaurantDetailsReducer, restaurantEditReducer, restaurantListReducer } from './reducers/restaurantReducers'
 import { dishCreateReducer, dishDeleteReducer, dishDetaisReducer, dishEditReducer, dishesListReducer, dishListReducer } from './reducers/dishReducers'
 import { cartReducer } from './reducers/cartReducers'
+import { addAddressReducer, addressListReducer } from './reducers/addressReducers'
 
 const reducer = combineReducers({
     userRegister: userRegisterReducer,
@@ -21,7 +22,9 @@ const reducer = combineReducers({
     dishesList: dishesListReducer,
     dishEdit: dishEditReducer,
     dishDetails: dishDetaisReducer,
-    dishDelete: dishDeleteReducer
+    dishDelete: dishDeleteReducer,
+    addAddress: addAddressReducer,
+    addressList: addressListReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []

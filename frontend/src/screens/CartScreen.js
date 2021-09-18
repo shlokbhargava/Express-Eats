@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Card, Col, Container, FormControl, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartAction'
@@ -51,13 +51,13 @@ const CartScreen = ({ match, location, history }) => {
     }, [dishId, dispatch, qty])
 
     const checkoutHandler = () => {
-
+        history.push('/login?redirect=shipping')
     }
 
     return (
         <>
             <Progress />
-            <Container className='mt-5'>
+            <Container className='py-5'>
                 <Row> 
                     <Col md={8}>
                         { cartItems.length === 0 ? 
@@ -66,7 +66,7 @@ const CartScreen = ({ match, location, history }) => {
                             <Link to='/'> Browse your food <i className="fas fa-arrow-circle-right"></i></Link>
                         </Message> : 
                         <ListGroup>
-                            <h1>{cartItems[0].restaurant.name}</h1>
+                            <h2>{cartItems[0].restaurant.name}</h2>
                             { cartItems.map(item => (
                                 <ListGroupItem key={item.dish}>
                                     <Row>
@@ -103,7 +103,7 @@ const CartScreen = ({ match, location, history }) => {
                         <br></br>
                         <Card>
                             <ListGroup variant='flush'>
-                                <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
+                                <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)) + (0.1*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
                                 </Card.Header>
                                 <ListGroupItem>
                                     <Row>
@@ -113,8 +113,14 @@ const CartScreen = ({ match, location, history }) => {
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <Row>
+                                        <Col>GST : </Col>
+                                        <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))) }</Col>
+                                    </Row>
+                                </ListGroupItem>
+                                <ListGroupItem>
+                                    <Row>
                                         <Col>Packaging Charges : </Col>
-                                        <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
+                                        <Col>₹{ getStringPrice((0.1*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
                                     </Row>
                                 </ListGroupItem>
                                 <ListGroupItem>
@@ -131,9 +137,17 @@ const CartScreen = ({ match, location, history }) => {
                                 </ListGroupItem>
                                 <ListGroupItem>
                                     <div className="d-grid gap-2">
-                                        <Button variant="dark" disabled={cartItems.length === 0} onClick={checkoutHandler}>Proceed to Checkout
-                                        </Button>
+                                        { (cartItems.length === 0) || (getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))) < cartItems[0].restaurant.minOrderValue) ? 
+                                        <Button variant="dark" disabled>
+                                            Proceed to Checkout
+                                        </Button> 
+                                        :
+                                            <Button variant="dark" onClick={checkoutHandler}>
+                                                Proceed to Checkout
+                                            </Button>
+                                        }
                                     </div>
+                                    { cartItems.length > 0 && getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))) < cartItems[0].restaurant.minOrderValue && <Message variant='danger' >{`Minimum Order Value is ₹${cartItems[0].restaurant.minOrderValue}`}</Message>}
                                 </ListGroupItem>
                             </ListGroup>
                         </Card>

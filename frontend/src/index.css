@@ -43,8 +43,12 @@ p {
 
 .flex {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
 }
+
+.flex > div {
+  margin: 12px;
+} 
 
 .opt {
   font-size: small;

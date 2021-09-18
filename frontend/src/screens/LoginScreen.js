@@ -8,7 +8,7 @@ import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-const LoginScreen = ({ history }) => {
+const LoginScreen = ({ history, location }) => {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState('')
@@ -17,15 +17,17 @@ const LoginScreen = ({ history }) => {
     const userLogin = useSelector((state) => state.userLogin)
     const { loading, userInfo, error } = userLogin
 
+    const redirect = location.search ? location.search.split('=')[1] : '/'
+
     useEffect(() => {
         if (userInfo && userInfo.isSeller) {
             history.push('/dashboard')
         }
 
         if (userInfo && !userInfo.isSeller) {
-            history.push('/')
+            history.push(redirect)
         }
-    }, [userInfo, history])
+    }, [userInfo, history, redirect])
 
     const loginHandler = (e) => {
         e.preventDefault()
@@ -60,7 +62,7 @@ const LoginScreen = ({ history }) => {
                     { loading ? 'Loading…' : 'Login' }
                 </Button>
             </Form>
-            <Link className='text-secondary' to='/register'>New User..? Register Here</Link>
+            <Link className='text-secondary' to={redirect ? `/register?redirect=${redirect}` : '/register'}>New User..? Register Here</Link>
         </FormContainer>
     );
 }

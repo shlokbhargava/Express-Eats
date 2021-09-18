@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-const Progress = () => {
+const Progress = ({ step2, step3, step4 }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
@@ -22,17 +22,29 @@ const Progress = () => {
                             Sign In
                         </Col>
                         <Col sm={2}>
-                            <i className="far fa-check-circle fa-lg align-center" style={{ color: '#198754' }}></i>
+                            { step2 ? 
+                                <i className="fas fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            :
+                                <i className="far fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            }
                             <br></br>
                             Shipping
                         </Col>
                         <Col sm={2}>
-                            <i className="far fa-check-circle fa-lg align-center" style={{ color: '#198754' }}></i>
+                            { step3 ? 
+                                <i className="fas fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            :
+                                <i className="far fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            }
                             <br></br>
                             Payment
                         </Col>
                         <Col sm={2}>
-                            <i className="far fa-check-circle fa-lg align-center" style={{ color: '#198754' }}></i>
+                            { step4 ? 
+                                <i className="fas fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            :
+                                <i className="far fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
+                            }
                             <br></br>
                             Place Order
                         </Col>

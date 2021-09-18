@@ -75,7 +75,7 @@ const SellerDashboard = ({ history }) => {
             </Button>
             <br></br>
             <br></br>
-            <Row>
+            <div className='flex'>
                 { loadingDish && <Loader /> }
                 { errorDish && <Message variant='danger'>{errorDish}</Message> }
                 { dishes && !loadingDish && dishes.length === 0 &&
@@ -83,11 +83,11 @@ const SellerDashboard = ({ history }) => {
                 }
                 { errorDelete && <Message variant='danger'>{errorDelete}</Message>  }
                 { dishes && dishes.map((dish) => (
-                    <Col className='flex' key={dish._id}>
+                    <div key={dish._id}>
                         <Dish dish={dish} />
-                    </Col>
+                    </div>
                 ))}
-            </Row>
+            </div>
         </>
     )
 }

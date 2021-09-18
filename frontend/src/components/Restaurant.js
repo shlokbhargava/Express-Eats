@@ -22,7 +22,7 @@ const Restaurant = ({ restaurant }) => {
     return (
         <Container className='py-5'>
             <Row className='py-5 mb-5'>
-                <Col md={5} className='note note-light'>
+                <Col sm={12} className='note note-light'>
                     <h3 className='h1-thin' style={{ fontSize: '2.5rem' }}>{restaurant.name}</h3>
                     <p>
                         {restaurant.description} <br></br>
@@ -43,10 +43,6 @@ const Restaurant = ({ restaurant }) => {
                             ""
                         }
                     </p>
-                </Col>
-                <Col md={7}>
-                    <h1><Badge variant='warning'>Current Orders</Badge></h1>
-                    {/* <Image src='/images/food-delivery.png' alt='Express Eats' fluid /> */}
                 </Col>
             </Row>
         </Container>
