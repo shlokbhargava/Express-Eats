@@ -9,6 +9,7 @@ const restaurantRoutes = require('./routes/restaurantRoutes')
 const uploadRoutes = require('./routes/uploadRoutes')
 const dishRoutes = require('./routes/dishRoutes')
 const addressRoutes = require('./routes/addressRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 
 dotenv.config()
 
@@ -24,6 +25,7 @@ app.use('/api/restaurant', restaurantRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/dish', dishRoutes)
 app.use('/api/address', addressRoutes)
+app.use('/api/orders', orderRoutes)
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads'))) 
 

@@ -5,6 +5,7 @@ import { addAddress, listAddress } from '../actions/addressAction'
 import Message from './Message'
 
 const AddressModal = ({ item }) => {
+    const [name, setName] = useState(item ? item.name : '')
     const [address, setAddress] = useState(item ? item.address : '')
     const [city, setCity] = useState(item ? item.city : '')
     const [state, setState] = useState(item ? item.state : '')
@@ -15,6 +16,7 @@ const AddressModal = ({ item }) => {
     const [success, setSuccess] = useState(false)
 
     const dispatch = useDispatch()
+    const addressId = item ? item._id : null
 
     useEffect(() => {
         if (success) {
@@ -31,14 +33,28 @@ const AddressModal = ({ item }) => {
             return
         }
 
-        dispatch(addAddress({
-            address,
-            city,
-            state,
-            postalCode,
-            country,
-            contact
-        }))
+        if (addressId !== null) {
+            dispatch(addAddress({
+                name,
+                address,
+                city,
+                state,
+                postalCode,
+                country,
+                contact,
+                addressId
+            }))
+        } else {
+            dispatch(addAddress({
+                name,
+                address,
+                city,
+                state,
+                postalCode,
+                country,
+                contact,
+            }))
+        } 
 
         setSuccess(true)
         alert('Address saved!')
@@ -54,6 +70,10 @@ const AddressModal = ({ item }) => {
             <Modal.Body>
                 { message && <Message variant='danger'>{message}</Message> }
                 <Form onSubmit={addressHandler}>
+                    <Form.Group className="mb-3">
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+                    </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Address</Form.Label>
                         <Form.Control as="textarea" rows={2} value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Address" />
@@ -82,7 +102,7 @@ const AddressModal = ({ item }) => {
                         <Form.Label>Contact Number</Form.Label>
                         <Form.Control type="number" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact Number" />
                     </Form.Group>
-                    <Button type="submit"> Submit </Button>
+                    { item ? <Button type="submit">Edit</Button> : <Button type="submit"> Submit </Button>}
                 </Form>
             </Modal.Body>
         </>

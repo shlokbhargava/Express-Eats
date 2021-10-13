@@ -21,7 +21,7 @@ const Restaurant = ({ restaurant }) => {
 
     return (
         <Container className='py-5'>
-            <Row className='py-5 mb-5'>
+            <Row className='mb-5'>
                 <Col sm={12} className='note note-light'>
                     <h3 className='h1-thin' style={{ fontSize: '2.5rem' }}>{restaurant.name}</h3>
                     <p>
@@ -35,7 +35,7 @@ const Restaurant = ({ restaurant }) => {
                         <strong>Call us :</strong> +91-{restaurant.contact} <br></br>
                         <strong>Write us at :</strong> {restaurant.email} <br></br>
                         <strong>Open till :</strong> {getTime(restaurant.time)}
-                        { (userInfo) || (userInfo && !userInfo.isSeller) ?
+                        { userInfo && userInfo.isSeller ?
                             <Link to='/restaurant/edit'>
                                 <i className="far fa-edit fa-lg float-end text-dark"></i> 
                             </Link>

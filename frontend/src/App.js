@@ -13,6 +13,9 @@ import EditDishScreen from "./screens/EditDishScreen";
 import EditRestaurantScreen from "./screens/EditRestaurantScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import ShippingScreen from "./screens/ShippingScreen";
+import PaymentScreen from "./screens/PaymentScreen";
+import ReviewOrderScreen from "./screens/ReviewOrderScreen";
+import OrderScreen from "./screens/OrderScreen";
 
 const App = () => {
   return (
@@ -32,6 +35,9 @@ const App = () => {
           <Route path='/restaurant/:id' component={RestaurantScreen} />
           <Route path='/dish/:id/edit' component={EditDishScreen} />
           <Route path='/shipping' component={ShippingScreen} />
+          <Route path='/payment' component={PaymentScreen} />
+          <Route path='/revieworder' component={ReviewOrderScreen} />
+          <Route path='/order/:id' component={OrderScreen} />
         </Container>
       </main>
       <Footer />

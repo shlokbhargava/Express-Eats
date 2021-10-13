@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Container, Modal } from 'react-bootstrap'
+import { Button, Col, Container, Modal, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { listAddress } from '../actions/addressAction'
 import Address from '../components/Address'
@@ -8,7 +8,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Progress from '../components/Progress'
 
-const ShippingScreen = () => {
+const ShippingScreen = ({ history }) => {
     const [show, setShow] = useState(false)
 
     const addressList = useSelector((state) => state.addressList)
@@ -16,6 +16,9 @@ const ShippingScreen = () => {
 
     const addAddress = useSelector((state) => state.addAddress)
     const { success } = addAddress
+
+    const addressDetail = useSelector((state) => state.addressDetail)
+    const { success: addressSuccess } = addressDetail
 
     const dispatch = useDispatch()
 
@@ -27,6 +30,10 @@ const ShippingScreen = () => {
 
         dispatch(listAddress())
     }, [success, dispatch])
+
+    const submitHandler = () => {
+        history.push('/payment')
+    }
 
     return (
         <>
@@ -40,24 +47,33 @@ const ShippingScreen = () => {
             }   
 
             <Container className='mt-3 justify-content-center'>
-                <h2 className='float-start'>Shipping Address</h2>
+                <h2 className='float-start'>Delivery</h2>
                 <Button className='float-end' variant='dark' size="sm" onClick={() => setShow(true)}>
                     <i className="fas fa-plus"></i> Add New Address
                 </Button>
                 { loading && <Loader />}
                 <br></br>
                 <br></br>
-                <div className='flex'>
-                    { addresses && addresses.map((address) => (
-                        <div key={address._id}>
-                            <Address address={address} />
-                        </div>
-                    ))}
-                </div>
+                <Row>
+                    <Col className='flex' md={10}>
+                        { addresses && addresses.map((address) => (
+                            <div key={address._id}>
+                                <Address address={address} />
+                            </div>
+                        ))}
+                    </Col>
+                    { addressSuccess && 
+                        <Col md={2}>
+                            <br></br>
+                            <div className="d-grid gap-2">
+                                <Button variant="secondary" onClick={submitHandler}>
+                                    Continue &nbsp;<i className="fas fa-arrow-circle-right"></i>
+                                </Button>
+                            </div>
+                        </Col>
+                    }
+                </Row>
             </Container>
-            {/* <div className='flex'>
-
-            </div> */}
         </>
     )
 }

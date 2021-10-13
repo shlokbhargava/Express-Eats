@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Message from '../components/Message'
 import { addToCart, removeFromCart } from '../actions/cartAction'
 import Progress from '../components/Progress'
+import { getStringPrice } from '../utility'
 
 const CartScreen = ({ match, location, history }) => {
     const dishId = match.params.id
@@ -12,10 +13,6 @@ const CartScreen = ({ match, location, history }) => {
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
     const dispatch = useDispatch()
-
-    const getStringPrice = (price) => {
-        return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 20 }).format(price)
-    }  
 
     // const getDeliveryTime = () => {
     //     const day = new Date()
@@ -103,30 +100,13 @@ const CartScreen = ({ match, location, history }) => {
                         <br></br>
                         <Card>
                             <ListGroup variant='flush'>
-                                <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0 + 50 + (0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)) + (0.1*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))))) }</b>
+                                <Card.Header as='h5'><b>Cart total : ₹{ getStringPrice((cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }
+                                </b>
                                 </Card.Header>
                                 <ListGroupItem>
                                     <Row>
                                         <Col>Quantity : </Col>
                                         <Col>( {cartItems.reduce((acc, item) => acc + item.qty, 0)} items )</Col>
-                                    </Row>
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col>GST : </Col>
-                                        <Col>₹{ getStringPrice((0.05*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0))) }</Col>
-                                    </Row>
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col>Packaging Charges : </Col>
-                                        <Col>₹{ getStringPrice((0.1*cartItems.reduce((acc, item) => acc + item.qty*item.price, 0)).toFixed(2)) }</Col>
-                                    </Row>
-                                </ListGroupItem>
-                                <ListGroupItem>
-                                    <Row>
-                                        <Col>Delivery Charges : </Col>
-                                        <Col>₹50.00</Col>
                                     </Row>
                                 </ListGroupItem>
                                 <ListGroupItem>

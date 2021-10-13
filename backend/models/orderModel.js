@@ -32,7 +32,7 @@ const orderSchema = mongoose.Schema({
             }
         }
     ],
-    shippingAddress: {
+    deliveryAddress: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Address'
@@ -52,6 +52,11 @@ const orderSchema = mongoose.Schema({
         default: 0.0
     },
     deliveryPrice: {
+        type: Number,
+        required: true,
+        default: 0.0
+    },
+    packagingPrice: {
         type: Number,
         required: true,
         default: 0.0

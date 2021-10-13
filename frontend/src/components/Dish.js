@@ -78,7 +78,7 @@ const Dish = ({ restaurant, dish }) => {
                     </Modal.Footer>
                 </Modal> 
             }
-            <Card className="my-3 rounded" style={{ width: '18rem', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
+            <Card className="rounded" style={{ width: '18rem', boxShadow: '0 2px 5px 0 rgb(0 0 0 / 20%), 0 2px 10px 0 rgb(0 0 0 / 10%)' }}>
                 <Card.Img src={dish.image} variant='top' style={{ height: '22vh' }} />
 
                 <Card.Body>

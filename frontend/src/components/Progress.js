@@ -28,7 +28,7 @@ const Progress = ({ step2, step3, step4 }) => {
                                 <i className="far fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
                             }
                             <br></br>
-                            Shipping
+                            Delivery
                         </Col>
                         <Col sm={2}>
                             { step3 ? 
@@ -46,7 +46,7 @@ const Progress = ({ step2, step3, step4 }) => {
                                 <i className="far fa-check-circle fa-lg" style={{ color: '#198754' }}></i>
                             }
                             <br></br>
-                            Place Order
+                            Review Order
                         </Col>
                     </Row>
                 </Col>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Col, Row, Modal } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { createDish, listDishes } from '../actions/dishActions'

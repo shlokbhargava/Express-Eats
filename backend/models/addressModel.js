@@ -5,6 +5,10 @@ const addressSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     address: { 
         type: String, 
         required: true 
