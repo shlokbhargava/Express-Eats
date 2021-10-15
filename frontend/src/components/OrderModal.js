@@ -14,7 +14,7 @@ const OrderModal = ({ order }) => {
                 <Modal.Title>ORDER DETAILS # {order._id}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <h4><strong>Order From : </strong>{ !userInfo.isSeller && order.restaurant.name}</h4>
+            { !userInfo.isSeller &&<h4><strong>Order From : </strong>{order.restaurant.name}</h4>}
                 <Table responsive="sm">
                     <thead>
                     <tr className='text-center'>
@@ -26,20 +26,20 @@ const OrderModal = ({ order }) => {
                     </thead>
                     <tbody>
                     { order.orderItems.map((item) => (
-                        <tr className='text-center'>
+                        <tr className='text-center' key={item._id}>
                             <td>{item.name}</td>
                             <td>{item.qty}</td>
                             <td>₹{getStringPrice(item.price)}</td>
                             <td>₹{getStringPrice(item.qty*item.price)}</td>
                         </tr>
                     )) }
-                        <tr>
+                        <tr className='text-center'>
                             <td></td>
                             <td></td>
-                            <td className='text-center'>Items Total + GST</td>
+                            <td>Items Total + GST</td>
                             <td>₹{getStringPrice(order.itemPrice)} + ₹{getStringPrice(order.gst)}</td>
                         </tr>
-                        <tr>
+                        <tr className='text-center'>
                             <td></td>
                             <td></td>
                             <td>Packaging Charges + Delivery Charges</td>

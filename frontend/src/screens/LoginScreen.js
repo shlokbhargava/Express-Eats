@@ -62,7 +62,7 @@ const LoginScreen = ({ history, location }) => {
                     { loading ? 'Loading…' : 'Login' }
                 </Button>
             </Form>
-            <Link className='text-secondary' to={redirect ? `/register?redirect=${redirect}` : '/register'}>New User..? Register Here</Link>
+            <Link className='text-muted' to={redirect ? `/register?redirect=${redirect}` : '/register'}>New User..? Register Here</Link>
         </FormContainer>
     );
 }

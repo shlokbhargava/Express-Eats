@@ -69,7 +69,7 @@ const RegisterScreen = ({ history }) => {
                     { loading ? 'Loading…' : 'Register' }
                 </Button>
             </Form>
-            <Link className='text-secondary' to='/login'>Already registered..? Login Here</Link>
+            <Link className='text-muted' to='/login'>Already registered..? Login Here</Link>
         </FormContainer>
     )
 }

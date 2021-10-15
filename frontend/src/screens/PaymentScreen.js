@@ -48,7 +48,7 @@ const PaymentScreen = ({ history }) => {
                         </div> 
                         <div className="form-check">
                             <label className="form-check-label">
-                            <input type="radio" className="form-check-input" name="optionsRadios" value='Cash on Delivery' disabled={!restaurantInfo.cod} onChange={(e) => setPaymentMethod(e.target.value)}></input>
+                            <input type="radio" className="form-check-input" name="optionsRadios" value='Cash on Delivery' disabled={restaurantInfo.cod} onChange={(e) => setPaymentMethod(e.target.value)}></input>
                             Cash on Delivery
                             </label>
                         </div> 
