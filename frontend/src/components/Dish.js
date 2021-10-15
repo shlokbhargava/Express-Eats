@@ -54,7 +54,7 @@ const Dish = ({ restaurant, dish }) => {
         dispatch(addToCart(dish._id, qty))
     }
 
-    const deleteHandler = (dishId) => {
+    const deleteHandler  = (dishId) => {
         if (window.confirm('Are you sure yu want to delete the dish')) {
             dispatch(deleteDish(dishId))
         }
@@ -83,7 +83,7 @@ const Dish = ({ restaurant, dish }) => {
 
                 <Card.Body>
                     <Card.Title as='div'>
-                        <strong style={{ fontSize: '1.3rem' }}>{dish.name}</strong>
+                        <strong style={{ fontSize: '1.28rem' }}>{dish.name}</strong>
                         { dish.type === 'Veg' ?
                             <img src='/images/veg.png' style={{ width: '0.9rem', height: '0.9rem'}} className='float-end' alt='Veg'></img> 
                         :
@@ -91,7 +91,7 @@ const Dish = ({ restaurant, dish }) => {
                         }
                     </Card.Title>
 
-                    <p>{dish.description}.</p>
+                    <p style={{ fontSize: '0.94rem', color: 'black' }}>{dish.description}.</p>
 
                     <div style={{ display: 'inline' }}>
                         <h4 className='float-start'><strong>₹{getStringPrice(dish.cost)}/-</strong></h4>

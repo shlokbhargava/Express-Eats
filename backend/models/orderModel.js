@@ -32,6 +32,11 @@ const orderSchema = mongoose.Schema({
             }
         }
     ],
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Restaurant'
+    },
     deliveryAddress: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -75,6 +80,16 @@ const orderSchema = mongoose.Schema({
         type: Date
     },
     isConfirmed: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isPreparing: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    isCancelled: {
         type: Boolean,
         required: true,
         default: false

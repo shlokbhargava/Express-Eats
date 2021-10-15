@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Button, Card, Col, Container, Image, ListGroup, ListGroupItem, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { createOrder, getOrderDetails } from '../actions/orderAction'
+import { createOrder } from '../actions/orderAction'
 import Message from '../components/Message'
 import Progress from '../components/Progress'
 import { getStringPrice } from '../utility'
@@ -10,7 +10,10 @@ const ReviewOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
 
     const cart = useSelector(state => state.cart)
-    const { cartItems, paymentMethod } = cart
+    const { cartItems } = cart
+
+    const payment_method = localStorage.getItem('paymentMethod')
+    const paymentMethod = payment_method.substring(1, payment_method.length-1)
     
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
@@ -19,7 +22,7 @@ const ReviewOrderScreen = ({ history }) => {
     const { address } = addressDetail
 
     const orderCreate = useSelector((state) => state.orderCreate)
-    const { order, success, error } = orderCreate
+    const { success, error } = orderCreate
 
     const itemsPrice = Number(cartItems.reduce((acc, item) => acc + item.qty*item.price, 0).toFixed(2))
     const deliveryPrice = itemsPrice >= 500 ? 0 : 50
@@ -30,22 +33,26 @@ const ReviewOrderScreen = ({ history }) => {
     const placeOrderHandler = () => {
         dispatch(createOrder({
             orderItems: cart.cartItems,
+            restaurant: cartItems[0].restaurant,
             deliveryAddress: address._id,
             paymentMethod: paymentMethod,
             itemPrice: itemsPrice,
             gst: gst,
             deliveryPrice: deliveryPrice,
             packagingPrice: packagingPrice,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
+            isPaid: true
         }))
     }
 
     useEffect(() => {
-        if (success) {
-            dispatch(getOrderDetails(order._id))
-            history.push(`/order/${order._id}`)
+        if (!userInfo || (userInfo && userInfo.isSeller)) {
+            history.push('/login')
         }
-    }, [success, dispatch, history, order])
+        if (success) {
+            history.push(`/order/${userInfo._id}`)
+        }
+    }, [success, dispatch, history, userInfo])
 
     return (
         <>

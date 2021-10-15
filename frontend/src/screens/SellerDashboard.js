@@ -13,7 +13,6 @@ const SellerDashboard = ({ history }) => {
     const dispatch = useDispatch()
 
     const [smShow, setSmShow] = useState(false)
-    const [alert, setAlert] = useState(false);
 
     const restaurantDetails = useSelector((state) => state.restaurantDetails)
     const { restaurantInfo, loading, error } = restaurantDetails
@@ -42,16 +41,8 @@ const SellerDashboard = ({ history }) => {
         if (successCreate) {
             history.push(`/dish/${dish._id}/edit`)
         }
-        if (successDelete) {
-            setAlert(true)
-            if (alert) {
-                window.alert('Dish Deleted!')
-                setAlert(false)
-            }
-            
-        }
         dispatch(listDishes(restaurantInfo._id))
-    }, [userInfo, history, restaurantInfo, successCreate, successDelete, dispatch, dish, alert])
+    }, [userInfo, history, restaurantInfo, successCreate, successDelete, dispatch, dish])
 
     const addDishHandler = () => {
         setSmShow(true)
@@ -62,7 +53,7 @@ const SellerDashboard = ({ history }) => {
         <>
             { loading && <Loader /> }
             { error && <Message variant='daner'>{error}</Message> }
-            <Restaurant restaurant={restaurantInfo} />
+            <Restaurant restaurant={restaurantInfo} history={history} />
             { errorCreate && <Message variant='danger'>{errorCreate}</Message> }
             { loadingCreate &&  
                 <Modal size="sm" show={smShow} onHide={() => setSmShow(false)}>
@@ -82,6 +73,7 @@ const SellerDashboard = ({ history }) => {
                 <Message variant='dark'>{`${restaurantInfo.name} is currently serving no dishes, come back later`}</Message> 
                 }
                 { errorDelete && <Message variant='danger'>{errorDelete}</Message>  }
+                <br></br>
                 { dishes && dishes.map((dish) => (
                     <div key={dish._id}>
                         <Dish dish={dish} />

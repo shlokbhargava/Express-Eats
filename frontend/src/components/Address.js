@@ -9,31 +9,14 @@ const Address = ({ address }) => {
 
     const dispatch = useDispatch()
 
-    const restaurantDetails = useSelector((state) => state.restaurantDetails)
-    const { restaurantInfo } = restaurantDetails
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
 
     const deleteHandler = () => {
         if (window.confirm('Are you sure you want to delete the address')) {
             dispatch(deleteAddress(address._id))
         }
     }
-
-    // const setAddress = (delAddress) => {
-
-    //     if (deliveryAddress) {
-    //         localStorage.removeItem('deliveryAddress')
-    //     }
-    //     const getDeliveryAddress = localStorage.getItem('deliveryAddress')
-    //     // console.log(getDeliveryAddress._id.toString())
-    //     // console.log(address._id.toString())
-    //     console.log(getDeliveryAddress)
-    //     if (getDeliveryAddress) {
-    //         setDeliveryAddress(false)
-    //     }
-    //     localStorage.setItem('deliveryAddress', JSON.stringify(address))
-    // }
-
-    // !deliveryAddress && localStorage.removeItem('deliveryAddress') 
 
     const getDeliveryAddress = (id) => {
         dispatch(listAddressDetails(id))
@@ -68,8 +51,8 @@ const Address = ({ address }) => {
                     <fieldset className="form-group">
                         <div className="form-check">
                             <label className="form-check-label">
-                            <input type="radio" className="form-check-input" name="optionsRadios" value={address._id} onChange={(e) => getDeliveryAddress(e.target.value)} disabled={address.state !== restaurantInfo.state && address.city !== restaurantInfo.state}></input>
-                            Deliver Here
+                            <input type="radio" className="form-check-input" name="optionsRadios" value={address._id} onChange={(e) => getDeliveryAddress(e.target.value)} disabled={address.state !== cartItems[0].restaurant.state && address.city !== cartItems[0].restaurant.state}></input>
+                            Deliver Here 
                             </label>
                         </div> 
                     </fieldset>

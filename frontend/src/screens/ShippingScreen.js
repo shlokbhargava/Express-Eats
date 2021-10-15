@@ -14,6 +14,9 @@ const ShippingScreen = ({ history }) => {
     const addressList = useSelector((state) => state.addressList)
     const { addresses, loading, error } = addressList
 
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
     const addAddress = useSelector((state) => state.addAddress)
     const { success } = addAddress
 
@@ -23,13 +26,17 @@ const ShippingScreen = ({ history }) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (!userInfo) {
+            history.push('/login')
+        }
+
         if (success) {
             setShow(false)
             dispatch(listAddress())
         }
 
         dispatch(listAddress())
-    }, [success, dispatch])
+    }, [success, dispatch, userInfo, history])
 
     const submitHandler = () => {
         history.push('/payment')

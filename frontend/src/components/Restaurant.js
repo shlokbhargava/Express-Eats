@@ -1,9 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Badge, Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 
-const Restaurant = ({ restaurant }) => {
+const Restaurant = ({ restaurant, history }) => {
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
@@ -17,6 +16,10 @@ const Restaurant = ({ restaurant }) => {
             time[0] = +time[0] % 12 || 12; 
         }
         return time.join ('');
+    }
+
+    const onClickHandler = () => {
+        history.push('/restaurant/edit')
     }
 
     return (
@@ -36,9 +39,7 @@ const Restaurant = ({ restaurant }) => {
                         <strong>Write us at :</strong> {restaurant.email} <br></br>
                         <strong>Open till :</strong> {getTime(restaurant.time)}
                         { userInfo && userInfo.isSeller ?
-                            <Link to='/restaurant/edit'>
-                                <i className="far fa-edit fa-lg float-end text-dark"></i> 
-                            </Link>
+                            <i role='button' className="far fa-edit fa-lg float-end text-dark" onClick={onClickHandler}></i> 
                         :
                             ""
                         }

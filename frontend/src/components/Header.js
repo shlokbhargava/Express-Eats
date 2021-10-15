@@ -26,10 +26,18 @@ const Header = () => {
                 <Nav className="ml-auto">
                     { userInfo ? 
                     <>
+                        { userInfo.isSeller &&
+                            <Button variant='dark'>
+                            <Link to='/orderlist' style={{ textDecoration: 'none', color: 'white' }}> 
+                                View Orders
+                            </Link>
+                            </Button>
+                        }
+                        &emsp;
                         <DropdownButton variant='dark' title={userInfo.name}>
                             <Dropdown.Item href="/profile"><i className="fas fa-user-circle"></i> Profile</Dropdown.Item>
                             {userInfo && !userInfo.isSeller &&
-                                <Dropdown.Item href="/">
+                                <Dropdown.Item href={`/order/${userInfo._id}`}>
                                     <i className="fas fa-box-open"></i> Orders
                                 </Dropdown.Item>
                             }   

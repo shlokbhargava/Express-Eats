@@ -18,7 +18,8 @@ main {
 }
 
 p {
-  font-size: 1.05rem;
+  font-size: 1rem;
+  color: #000000;
 }
 
 .footer {
@@ -56,8 +57,75 @@ p {
   padding: 2px;
 }
 
-.progress {
-  height: 3px;
-  background-color: #00b74a;
-  color: #00b74a;
+
+.progresses {
+  position: relative;
+  max-width: 88%;
+  margin-left: 10px;
+}
+
+.progresses ul {
+  list-style: none;
+  padding: 0
+}
+
+.progresses ul li {
+  top: 5.5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  color: #a5a1a1;
+  z-index: 200;
+  position: relative
+}
+
+.progresses ul li.active {
+  color: #262626;
+  background-color: #262626;
+}
+
+.progresses ul li::after {
+  position: absolute;
+  top: 18px;
+  left: -15px;
+  font-size: 0.85rem;
+  width: 100px
+}
+
+#step-1::after {
+  content: "Placed"
+}
+
+#step-2::after {
+  content: "Confirmed";
+  left: -30px;
+}
+
+#step-3::after {
+  content: "Preparing";
+  left: -25px;
+}
+
+#step-4::after {
+  content: "Out for delivery";
+  left: -40px;
+}
+
+#step-5::after {
+  content: "Delivered";
+  left: -22px;
+}
+
+.progresses .progress {
+  height: 0.22rem;
+  width: 100%;
+  top: 33px;
+  position: absolute;
+  background-color: #f0f0f0;
+  border-radius: 10px
+}
+
+.progress-bar {
+  background-color: #262626;
 }

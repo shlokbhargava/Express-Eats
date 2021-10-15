@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import { savePaymentMethod } from '../actions/cartAction'
@@ -10,6 +10,9 @@ const PaymentScreen = ({ history }) => {
     const restaurantDetails = useSelector((state) => state.restaurantDetails)
     const { restaurantInfo } = restaurantDetails
 
+    const userLogin = useSelector((state) => state.userLogin)
+    const { userInfo } = userLogin
+
     const dispatch = useDispatch()
 
     const submitHandler = (e) => {
@@ -17,6 +20,12 @@ const PaymentScreen = ({ history }) => {
         dispatch(savePaymentMethod(paymentMethod))
         history.push('/revieworder')
     }
+
+    useEffect(() => {
+        if (!userInfo) {
+            history.push('/login')
+        }
+    },[userInfo, history])
 
     return (
         <>
@@ -45,7 +54,7 @@ const PaymentScreen = ({ history }) => {
                         </div> 
                     </fieldset>
                     <Button variant="secondary" onClick={submitHandler}>
-                        Confirm Order
+                        Review Order
                     </Button>
                 </Form>
             </Container>
