@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listAddress } from '../actions/addressAction'
 import Address from '../components/Address'
 import AddressModal from '../components/AddressModal'
-import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Progress from '../components/Progress'
 
@@ -12,7 +11,7 @@ const ShippingScreen = ({ history }) => {
     const [show, setShow] = useState(false)
 
     const addressList = useSelector((state) => state.addressList)
-    const { addresses, loading, error } = addressList
+    const { addresses, error } = addressList
 
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
@@ -58,7 +57,7 @@ const ShippingScreen = ({ history }) => {
                 <Button className='float-end' variant='dark' size="sm" onClick={() => setShow(true)}>
                     <i className="fas fa-plus"></i> Add New Address
                 </Button>
-                { loading && <Loader />}
+                {/* { loading && <Loader />} */}
                 <br></br>
                 <br></br>
                 <Row>

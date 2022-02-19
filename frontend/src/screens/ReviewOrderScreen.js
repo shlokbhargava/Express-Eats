@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Progress from '../components/Progress'
 import { getStringPrice } from '../utility'
 
+
 const ReviewOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
 
@@ -22,11 +23,11 @@ const ReviewOrderScreen = ({ history }) => {
     const { address } = addressDetail
 
     const orderCreate = useSelector((state) => state.orderCreate)
-    const { success, error } = orderCreate
+    const { success, order, error } = orderCreate
 
     const itemsPrice = Number(cartItems.reduce((acc, item) => acc + item.qty*item.price, 0).toFixed(2))
     const deliveryPrice = itemsPrice >= 500 ? 0 : 50
-    const packagingPrice = Number((0.06*itemsPrice).toFixed(2))
+    const packagingPrice = Number((0.02*itemsPrice).toFixed(2))
     const gst = Number((0.05*itemsPrice).toFixed(2))
     const totalPrice = Number((itemsPrice+gst+packagingPrice+deliveryPrice).toFixed(2))
 
@@ -41,7 +42,8 @@ const ReviewOrderScreen = ({ history }) => {
             deliveryPrice: deliveryPrice,
             packagingPrice: packagingPrice,
             totalPrice: totalPrice,
-            isPaid: true
+            isPaid: true,
+            paidAt: Date.now()
         }))
     }
 
@@ -52,7 +54,7 @@ const ReviewOrderScreen = ({ history }) => {
         if (success) {
             history.push(`/order/${userInfo._id}`)
         }
-    }, [success, dispatch, history, userInfo])
+    }, [success, dispatch, history, userInfo, order])
 
     return (
         <>

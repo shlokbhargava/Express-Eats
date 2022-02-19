@@ -79,30 +79,9 @@ const orderSchema = mongoose.Schema({
     paidAt: {
         type: Date
     },
-    isConfirmed: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    isPreparing: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    isCancelled: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    isOutForDelivery: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-    isDelivered: {
-        type: Boolean,
-        required: true,
-        default: false
+    status: {
+        type: String,
+        default: ''
     },
     deliveredAt: {
         type: Date

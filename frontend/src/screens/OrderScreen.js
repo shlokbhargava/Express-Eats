@@ -6,7 +6,9 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import MyOrders from '../components/MyOrders'
 
+
 const OrderScreen = ({ match, history }) => {
+
     const userId = match.params.id
 
     const dispatch = useDispatch()
@@ -20,11 +22,12 @@ const OrderScreen = ({ match, history }) => {
     useEffect(() => {
         if (!userInfo || (userInfo && userInfo.isSeller)) {
             history.push('/login')
-        }
-        
+        }  
+
         if (!successOrderDetails) {
             dispatch(getOrderDetails(userId))
         }
+        
     }, [dispatch, userId, history, userInfo, successOrderDetails])
 
     return loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
@@ -34,7 +37,12 @@ const OrderScreen = ({ match, history }) => {
                     <Col sm={12} md={{ span: 10, offset: 1 }}>
                         { orders && orders.length === 0 && <Message variant='info'>{'No orders yet!'}</Message> }
                         { orders && orders.map((order) => (
-                            <div key={order._id}>
+                            <div key={order._id}>  
+                                <script>
+                                    {
+                                        <MyOrders order={order} />
+                                    }
+                                </script>
                                 <MyOrders order={order} />
                             </div>
                         )) }

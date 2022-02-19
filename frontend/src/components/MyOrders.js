@@ -1,27 +1,23 @@
 import React, { useState } from 'react'
 import { Button, Card, Col, Modal, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { getDate, getStringPrice } from '../utility'
+import { updateOrder } from '../actions/orderAction'
 import OrderModal from './OrderModal'
+import Message from './Message'
+
 
 const MyOrders = ({ order }) => {
     const [show, setShow] = useState()
 
-    const orderConfirm = useSelector((state) => state.orderConfirm)
-    const { success } = orderConfirm 
-
-    const orderPrepare = useSelector((state) => state.orderPrepare)
-    const { success: successPrepare } = orderPrepare 
-
-    const orderOutForDelivery = useSelector((state) => state.orderOutForDelivery)
-    const { success: successOrderOutForDelivery } = orderOutForDelivery
-
-    const orderDeliver = useSelector((state) => state.orderDeliver)
-    const { success: successorderDeliver } = orderDeliver
+    const dispatch = useDispatch()
 
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
+
+    const updateOrderStatusHandler = (orderId, status) => {
+        dispatch(updateOrder(orderId, status))
+    }
 
     return (
         <>
@@ -48,12 +44,7 @@ const MyOrders = ({ order }) => {
                         </Col>
                         <Col md={3}>
                             <strong>ORDER STATUS</strong> <br></br>
-                            {   (order.isPaid && !order.isConfirmed) ? 'PLACED' : 
-                                ((success && !successPrepare) || (order.isConfirmed && !order.isPreparing)) ? 'CONFIRMED' :
-                                ((successPrepare && !successOrderOutForDelivery) || (order.isPreparing && !order.isOutForDelivery)) ? 'PREPARING' :
-                                ((successOrderOutForDelivery && !successorderDeliver) || (order.isOutForDelivery && !order.isDelivered)) ?'OUT FOR DELIVERY' :
-                                (successorderDeliver || order.isDelivered) && 'DELIVERED'
-                            }
+                            {order.status}
                         </Col>
                         <Col md={3}>
                             <strong>ORDER # </strong> <br></br>
@@ -64,29 +55,35 @@ const MyOrders = ({ order }) => {
                 <Card.Body>
                     <Row>
                         <Col md={8}>
-                            <div className="progresses py-4">
-                                <ul className="d-flex align-items-center justify-content-between">
-                                    { order.isPaid ? <li id="step-1" className="active"></li> : <li id="step-1"></li> }
-                                    { (success || order.isConfirmed) ? <li id="step-2" className="active"></li> : <li id="step-2"></li> }
-                                    { (successPrepare || order.isPreparing) ? <li id="step-3" className="active"></li> : <li id="step-3"></li> }
-                                    { (successOrderOutForDelivery || order.isOutForDelivery) ? <li id="step-4" className="active"></li> : <li id="step-4"></li> }
-                                    { (successorderDeliver || order.isDelivered) ? <li id="step-5" className="active"></li> : <li id="step-5"></li> }
-                                </ul>
-                                <div className="progress">
-                                    { order.isPaid && <div className="progress-bar" role="progressbar"></div> }
-                                    { (success || order.isConfirmed) && <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>}
-                                    { (successPrepare || order.isPreparing) && <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>}
-                                    { (successOrderOutForDelivery || order.isOutForDelivery) && <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>}
-                                    { (successorderDeliver || order.isDelivered) && <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>}
-                                </div>
-                            </div>
+                            { order.status !== 'Cancel' && 
+                                <div className="progresses py-4">
+                                    <ul className="d-flex align-items-center justify-content-between">
+                                        { order.isPaid ? <li id="step-1" className="active"></li> : <li id="step-1"></li> }
+                                        { (order.status === 'Confirm' || order.status === 'Preparing' || order.status === 'OutForDelivery' || order.status === 'Delivered') ? <li id="step-2" className="active"></li> : <li id="step-2"></li> }
+                                        { (order.status === 'Preparing' || order.status === 'OutForDelivery' || order.status === 'Delivered') ? <li id="step-3" className="active"></li> : <li id="step-3"></li> }
+                                        { (order.status === 'OutForDelivery' || order.status === 'Delivered') ? <li id="step-4" className="active"></li> : <li id="step-4"></li> }
+                                        { order.status === 'Delivered' ? <li id="step-5" className="active"></li> : <li id="step-5"></li> }
+                                    </ul>
+                                    <div className="progress">
+                                        { order.isPaid && <div className="progress-bar" role="progressbar"></div> }
+                                        { order.status === 'Confirm' && <div className="progress-bar" role="progressbar" style={{ width: '25%' }}></div>}
+                                        { order.status === 'Preparing' && <div className="progress-bar" role="progressbar" style={{ width: '50%' }}></div>}
+                                        { order.status === 'OutForDelivery' && <div className="progress-bar" role="progressbar" style={{ width: '75%' }}></div>}
+                                        { order.status === 'Delivered' && <div className="progress-bar" role="progressbar" style={{ width: '100%' }}></div>}
+                                    </div>
+                                </div> 
+                            }
                             <br></br>
                             <div>
-                                { (order.isPaid && !order.isConfirmed) && <li>Order has been Placed.</li>}
-                                { ((success && !successPrepare) || (order.isConfirmed && !order.isPreparing)) && <li>Restaurant has confirmed your Order.</li>}
-                                { ((successPrepare && !successOrderOutForDelivery) || (order.isPreparing && !order.isOutForDelivery)) && <li>Restaurant has started preparing your food.</li>}
-                                { ((successOrderOutForDelivery && !successorderDeliver) || (order.isOutForDelivery && !order.isDelivered)) && <li>Your order is out for delivery.</li>}
-                                { (successorderDeliver || order.isDelivered) && <p><strong>Payment Method : </strong>{order.paymentMethod}</p> }
+                                { order.status === 'Cancel' ? <Message variant="danger">{'Order Cancelled'}</Message> :
+                                    <>
+                                        { (order.isPaid && order.status === '') && <li>Order has been Placed.</li>}
+                                        { order.status === 'Confirm' && <li>Restaurant has confirmed your Order.</li>}
+                                        { order.status === 'Preparing' && <li>Restaurant has started preparing your food.</li>}
+                                        { order.status === 'OutForDelivery' && <li>Your order is out for delivery.</li>}
+                                        { order.status === 'Delivered' && <p><strong>Payment Method : </strong>{order.paymentMethod}</p> }
+                                    </>
+                                }
                             </div>
                         </Col>
                         <Col md={4} style={{ textAlign: "right" }}>
@@ -94,9 +91,9 @@ const MyOrders = ({ order }) => {
                             {order.deliveryAddress && order.deliveryAddress.name}, {order.deliveryAddress && order.deliveryAddress.contact} <br></br>
                             {order.deliveryAddress && order.deliveryAddress.address} <br></br>
                             {order.deliveryAddress && order.deliveryAddress.city}, {order.deliveryAddress && order.deliveryAddress.state} - {order.deliveryAddress && order.deliveryAddress.postalCode} 
-                            <br></br><br></br>
-                            { !order.isConfirmed && <><Button variant='danger' size='sm'>Cancel</Button>&emsp;</> }
-                            <Link onClick={handleShow}><strong>View Details</strong></Link>
+                            <br></br>
+                            { order.status === '' && <><Button variant='danger' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Cancel')}>Cancel</Button>&emsp;</> }
+                            <button className="btn btn-link" onClick={handleShow}><strong>View Details</strong></button>
                         </Col>
                     </Row>
                 </Card.Body>

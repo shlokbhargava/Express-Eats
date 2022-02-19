@@ -7,17 +7,6 @@ const Restaurant = ({ restaurant, history }) => {
     const userLogin = useSelector((state) => state.userLogin)
     const { userInfo } = userLogin
 
-    const getTime = (time) => {
-        time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-        if (time.length > 1) { 
-            time = time.slice (1); 
-            time[5] = +time[0] < 12 ? ' AM' : ' PM'; 
-            time[0] = +time[0] % 12 || 12; 
-        }
-        return time.join ('');
-    }
-
     const onClickHandler = () => {
         history.push('/restaurant/edit')
     }
@@ -37,7 +26,7 @@ const Restaurant = ({ restaurant, history }) => {
                         <strong>Deliver in :</strong> {restaurant.state}, {restaurant.country} <br></br>
                         <strong>Call us :</strong> +91-{restaurant.contact} <br></br>
                         <strong>Write us at :</strong> {restaurant.email} <br></br>
-                        <strong>Open till :</strong> {getTime(restaurant.time)}
+                        <strong>Open till :</strong> {restaurant.time}
                         { userInfo && userInfo.isSeller ?
                             <i role='button' className="far fa-edit fa-lg float-end text-dark" onClick={onClickHandler}></i> 
                         :

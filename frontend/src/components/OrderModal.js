@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Table } from 'react-bootstrap'
+import { Alert, Modal, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { getStringPrice } from '../utility'
 
@@ -53,6 +53,16 @@ const OrderModal = ({ order }) => {
                         </tr>
                     </tbody>
                 </Table>
+                <Alert variant="dark">
+                    <Alert.Heading>Address</Alert.Heading>
+                    <p>
+                        {order.deliveryAddress.name} <br></br>
+                        {order.deliveryAddress.address} <br></br>
+                        {order.deliveryAddress.city}, {order.deliveryAddress.state} {order.deliveryAddress.postalCode} <br></br>
+                        {order.deliveryAddress.country} <br></br>
+                        Contact Number: {order.deliveryAddress.contact} <br></br>
+                    </p>
+                </Alert>
             </Modal.Body>  
         </>
     )

@@ -6,7 +6,7 @@ const Order = require("../models/orderModel");
 // @route    POST /api/orders
 // @access   Private
 exports.createOrder = asyncHandler(async(req, res) => {
-    const { orderItems, restaurant, deliveryAddress, paymentMethod, itemPrice, gst, deliveryPrice, packagingPrice, totalPrice, isPaid } = req.body
+    const { orderItems, restaurant, deliveryAddress, paymentMethod, itemPrice, gst, deliveryPrice, packagingPrice, totalPrice, isPaid, paidAt } = req.body
 
     if (orderItems && orderItems.length === 0) {
         res.status(400)
@@ -23,7 +23,8 @@ exports.createOrder = asyncHandler(async(req, res) => {
             deliveryPrice,
             packagingPrice,
             totalPrice,
-            isPaid
+            isPaid,
+            paidAt
         })
 
         res.status(201).json(order)
@@ -51,70 +52,18 @@ exports.getOrderDetails = asyncHandler(async(req, res) => {
 })
 
 
-// @desc     Mark Order as Confirmed
-// @route    PUT /api/orders/:id/confirm
+// @desc     Update Order Status
+// @route    PUT /api/orders/:id/updateStatus
 // @access   Private
-exports.confirmOrder = asyncHandler(async(req, res) => {
+exports.updateOrder = asyncHandler(async(req, res) => {
     const order = await Order.findById(req.params.id)
 
     if (order) {
-        order.isConfirmed = true
-        order.paidAt = Date.now()
+        order.status = req.body.status
 
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-    } else {
-        res.status(404)
-        throw new Error('No order found')
-    }
-})
-
-
-// @desc     Mark Order as Preparing
-// @route    PUT /api/orders/:id/prepare
-// @access   Private
-exports.prepareOrder = asyncHandler(async(req, res) => {
-    const order = await Order.findById(req.params.id)
-
-    if (order) {
-        order.isPreparing = true
-        
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-    } else {
-        res.status(404)
-        throw new Error('No order found')
-    }
-})
-
-
-// @desc     Mark Order as Out for delivery
-// @route    PUT /api/orders/:id/outfordelivery
-// @access   Private
-exports.outForDelivery = asyncHandler(async(req, res) => {
-    const order = await Order.findById(req.params.id)
-
-    if (order) {
-        order.isOutForDelivery = true
-        
-        const updatedOrder = await order.save()
-        res.json(updatedOrder)
-    } else {
-        res.status(404)
-        throw new Error('No order found')
-    }
-})
-
-
-// @desc     Mark Order as Delivered
-// @route    PUT /api/orders/:id/deliver
-// @access   Private
-exports.deliverOrder = asyncHandler(async(req, res) => {
-    const order = await Order.findById(req.params.id)
-
-    if (order) {
-        order.isDelivered = true
-        order.deliveredAt = Date.now()
+        if (req.body.status === 'Delivered') {
+            order.deliveredAt = Date.now()
+        }
 
         const updatedOrder = await order.save()
         res.json(updatedOrder)

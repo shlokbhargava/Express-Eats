@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { confirmOrder, deliverOrder, outForDeliveryOrder, prepareOrder } from '../actions/orderAction'
+import { useDispatch } from 'react-redux'
+import { updateOrder } from '../actions/orderAction'
 import { getDate, getStringPrice } from '../utility'
 import OrderModal from './OrderModal'
 
@@ -10,32 +10,8 @@ const OrderListTable = ({ order }) => {
 
     const dispatch = useDispatch()
 
-    const orderConfirm = useSelector((state) => state.orderConfirm)
-    const { success } = orderConfirm 
-
-    const orderPrepare = useSelector((state) => state.orderPrepare)
-    const { success: successPrepare } = orderPrepare 
-
-    const orderOutForDelivery = useSelector((state) => state.orderOutForDelivery)
-    const { success: successOrderOutForDelivery } = orderOutForDelivery
-
-    const orderDeliver = useSelector((state) => state.orderDeliver)
-    const { success: successorderDeliver } = orderDeliver
-
-    const confirmOrderHandler = (orderId) => {
-        dispatch(confirmOrder(orderId))
-    }
-
-    const prepareOrderHandler = (orderId) => {
-        dispatch(prepareOrder(orderId))
-    }
-
-    const outforDeliveryOrderHandler = (orderId) => {
-        dispatch(outForDeliveryOrder(orderId))
-    }
-
-    const deliverOrderHandler = (orderId) => {
-        dispatch(deliverOrder(orderId))
+    const updateOrderStatusHandler = (orderId, status) => {
+        dispatch(updateOrder(orderId, status))
     }
 
     const handleClose = () => setShow(false)
@@ -61,19 +37,20 @@ const OrderListTable = ({ order }) => {
             </td>
             <td>{getDate(order.createdAt)}</td>
             <td>
-                { (!success && !order.isConfirmed) ? 
+                {
+                    order.status === '' ? 
                     <>
-                        <Button variant='danger' size='sm'>Cancel</Button> &nbsp;
-                        <Button variant='success' size='sm' onClick={() => confirmOrderHandler(order._id)}>Accept</Button>
+                        <Button variant='danger' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Cancel')}>Cancel</Button> &nbsp;
+                        <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Confirm')}>Accept</Button>
                     </>
                 :
-                    (!successPrepare && !order.isPreparing) ? <Button variant='success' size='sm' onClick={() => prepareOrderHandler(order._id)}>Started Preparing</Button>
+                    order.status === 'Confirm' ? <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Preparing')}>Preparing</Button>
                 :
-                    (!successOrderOutForDelivery && !order.isOutForDelivery) ? <Button variant='success' size='sm' onClick={() => outforDeliveryOrderHandler(order._id)}>Mark as Out for Delivery</Button>
+                    order.status === 'Preparing' ? <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'OutForDelivery')}>Out for Delivery</Button>
                 :
-                    (!successorderDeliver && !order.isDelivered) ? <Button variant='success' size='sm' onClick={() => deliverOrderHandler(order._id)}> Mark as Delivered</Button>
+                    order.status === 'OutForDelivery' ? <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Delivered')}>Delivered</Button>
                 : 
-                    (successorderDeliver || order.isDelivered) && <p className='text-success'>&emsp;&emsp; <i className="fa-lg fas fa-check-circle"></i></p>
+                    order.status === 'Delivered' && <p className='text-success'>&emsp;&emsp; <i className="fa-lg fas fa-check-circle"></i></p>
                 }
             </td>   
         </>
