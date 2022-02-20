@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addToCart, removeAllFromCart, removeFromCart } from '../actions/cartAction'
 import { deleteDish } from '../actions/dishActions'
+import { toast } from 'react-toastify'
 
 const Dish = ({ restaurant, dish }) => {
     const cart = useSelector((state) => state.cart)
@@ -39,13 +40,15 @@ const Dish = ({ restaurant, dish }) => {
             setQty(qty)
             if (qty === 0) {
                 dispatch(removeFromCart(dish._id))
+                toast.error('Dish removed to the cart')
             } else {
                 dispatch(addToCart(dish._id, qty))
+                qty === 1 ? toast.success('Dish added to the cart') : toast.info('Dish quantity updated')
             }
         } else {
             setSmShow(true)
         }
-    }
+    } 
 
     const emptyCart = (qty) => {
         setQty(qty)

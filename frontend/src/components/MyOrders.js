@@ -5,6 +5,7 @@ import { getDate, getStringPrice } from '../utility'
 import { updateOrder } from '../actions/orderAction'
 import OrderModal from './OrderModal'
 import Message from './Message'
+import moment from 'moment'
 
 
 const MyOrders = ({ order }) => {
@@ -16,6 +17,7 @@ const MyOrders = ({ order }) => {
     const handleShow = () => setShow(true)
 
     const updateOrderStatusHandler = (orderId, status) => {
+        console.log('first')
         dispatch(updateOrder(orderId, status))
     }
 
@@ -36,15 +38,15 @@ const MyOrders = ({ order }) => {
                     <Row style={{ fontSize: '0.88rem' }}>
                         <Col md={3}>
                             <strong>ORDER PLACED</strong> <br></br>
-                            {getDate(order.createdAt)}
+                            {getDate(order.createdAt)} &nbsp;{moment(order.createdAt).format('h:mm A')}
                         </Col>
                         <Col md={3}>
                             <strong>ORDER TOTAL</strong> <br></br>
-                            ₹{getStringPrice(order.totalPrice)}
+                            ₹{getStringPrice(order.totalPrice)} 
                         </Col>
                         <Col md={3}>
                             <strong>ORDER STATUS</strong> <br></br>
-                            {order.status}
+                            {order.status} &nbsp;{getDate(order.createdAt)} &nbsp;{ order.status === 'Delivered' ? moment(order.deliveredAt).format('h:mm A') : moment(order.updatedAt).format('h:mm A')}
                         </Col>
                         <Col md={3}>
                             <strong>ORDER # </strong> <br></br>

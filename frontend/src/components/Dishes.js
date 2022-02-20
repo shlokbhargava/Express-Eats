@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Col, Modal, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { addToCart, removeAllFromCart, removeFromCart } from '../actions/cartAction'
 
 const Dishes = ({ dish }) => {
@@ -34,8 +35,10 @@ const Dishes = ({ dish }) => {
             setQty(qty)
             if (qty === 0) {
                 dispatch(removeFromCart(dish._id))
+                toast.error('Dish removed to the cart')
             } else {
                 dispatch(addToCart(dish._id, qty))
+                qty === 1 ? toast.success('Dish added to the cart') : toast.info('Dish quantity updated')
             }
         } else {
             setSmShow(true)

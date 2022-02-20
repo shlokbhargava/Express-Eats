@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { updateOrder } from '../actions/orderAction'
 import { getDate, getStringPrice } from '../utility'
 import OrderModal from './OrderModal'
+import moment from 'moment'
 
 const OrderListTable = ({ order }) => {
     const [show, setShow] = useState(false)
@@ -35,7 +36,7 @@ const OrderListTable = ({ order }) => {
             <td>&emsp;
                 <Button variant='secondary' style={{ paddingLeft: '20px', paddingRight: '20px' }} onClick={handleShow} size='sm'>View</Button>
             </td>
-            <td>{getDate(order.createdAt)}</td>
+            <td>{getDate(order.createdAt)} &nbsp;{moment(order.createdAt).format('h:mm A')}</td>
             <td>
                 {
                     order.status === '' ? 
@@ -50,7 +51,9 @@ const OrderListTable = ({ order }) => {
                 :
                     order.status === 'OutForDelivery' ? <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Delivered')}>Delivered</Button>
                 : 
-                    order.status === 'Delivered' && <p className='text-success'>&emsp;&emsp; <i className="fa-lg fas fa-check-circle"></i></p>
+                    order.status === 'Delivered' ? <p className='text-success'>&emsp;&emsp; <i className="fa-lg fas fa-check-circle"></i></p>
+                :
+                    order.status === 'Cancel' && <Button variant='danger' size='sm'>Order Cancelled</Button>
                 }
             </td>   
         </>

@@ -1,5 +1,7 @@
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import HomeScreen from "./screens/HomeScreen";
@@ -40,6 +42,19 @@ const App = () => {
           <Route path='/revieworder' component={ReviewOrderScreen} />
           <Route path='/order/:id' component={OrderScreen} />
           <Route path='/orderlist' component={OrderList} />
+
+          <ToastContainer
+            theme='dark'
+            position="bottom-center"
+            autoClose={1500}
+            hideProgressBar
+            newestOnTop
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </Container>
       </main>
       <Footer />

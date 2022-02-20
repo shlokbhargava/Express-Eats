@@ -2,6 +2,7 @@ import React from 'react'
 import { Alert, Modal, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { getStringPrice } from '../utility'
+import Message from './Message'
 
 const OrderModal = ({ order }) => {
 
@@ -14,7 +15,7 @@ const OrderModal = ({ order }) => {
                 <Modal.Title>ORDER DETAILS # {order._id}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            { !userInfo.isSeller &&<h4><strong>Order From : </strong>{order.restaurant.name}</h4>}
+            { !userInfo.isSeller &&<h4><strong>Order From : </strong>{order.restaurant.name}</h4> }
                 <Table responsive="sm">
                     <thead>
                     <tr className='text-center'>
@@ -33,24 +34,30 @@ const OrderModal = ({ order }) => {
                             <td>₹{getStringPrice(item.qty*item.price)}</td>
                         </tr>
                     )) }
-                        <tr className='text-center'>
-                            <td></td>
-                            <td></td>
-                            <td>Items Total + GST</td>
-                            <td>₹{getStringPrice(order.itemPrice)} + ₹{getStringPrice(order.gst)}</td>
-                        </tr>
-                        <tr className='text-center'>
-                            <td></td>
-                            <td></td>
-                            <td>Packaging Charges + Delivery Charges</td>
-                            <td>₹{getStringPrice(order.packagingPrice)} + ₹{getStringPrice(order.deliveryPrice)}</td>
-                        </tr>
-                        <tr className='text-center'>
-                            <td></td>
-                            <td></td>
-                            <td><strong>Order Total</strong></td>
-                            <td>₹{getStringPrice(order.totalPrice)}</td>
-                        </tr>
+
+                        { order.status === 'Cancel' ? <Message variant="danger">{'Order Cancelled'}</Message> 
+                        :
+                            <>
+                                <tr className='text-center'>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Items Total + GST</td>
+                                    <td>₹{getStringPrice(order.itemPrice)} + ₹{getStringPrice(order.gst)}</td>
+                                </tr>
+                                <tr className='text-center'>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Packaging Charges + Delivery Charges</td>
+                                    <td>₹{getStringPrice(order.packagingPrice)} + ₹{getStringPrice(order.deliveryPrice)}</td>
+                                </tr>
+                                <tr className='text-center'>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Order Total</strong></td>
+                                    <td>₹{getStringPrice(order.totalPrice)}</td>
+                                </tr>
+                            </>
+                        }
                     </tbody>
                 </Table>
                 <Alert variant="dark">
