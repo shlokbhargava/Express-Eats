@@ -32,10 +32,26 @@ exports.createOrder = asyncHandler(async(req, res) => {
 })
 
 
+// @desc     Get Order Details By orderId
+// @route    GET /api/orders/orderId/:id
+// @access   Public
+exports.getOrderDetails = asyncHandler(async(req, res) => {
+    let order = await Order.findById(req.params.id).populate('restaurant').populate('deliveryAddress').sort('-createdAt')
+    
+    if (!order) {
+        res.status(404)
+        throw new Error('No such order found')
+    } else {
+        res.status(200)
+        res.json(order)
+    }
+})
+
+
 // @desc     Get Orders Details By userId / restaurantId
 // @route    GET /api/orders/:id
 // @access   Private
-exports.getOrderDetails = asyncHandler(async(req, res) => {
+exports.getOrders = asyncHandler(async(req, res) => {
     let orders = await Order.find({ restaurant: req.params.id }).populate('deliveryAddress').sort('-createdAt')
 
     if (orders.length === 0) {

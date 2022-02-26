@@ -34,7 +34,7 @@ const OrderList = ({ history }) => {
             dispatch(getOrderDetails(restaurantInfo._id))
         }
         
-    }, [dispatch, history, userInfo, restaurantInfo, successOrderDetails, successCreate])
+    }, [dispatch, history, userInfo, successOrderDetails, successCreate, restaurantInfo])
 
     return (
         <>

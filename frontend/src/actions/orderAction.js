@@ -1,5 +1,5 @@
 import axios from "axios"
-import { UPDATE_ORDER_FAIL, UPDATE_ORDER_REQUEST, UPDATE_ORDER_SUCCESS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS } from "../constants/orderConstants";
+import { UPDATE_ORDER_FAIL, UPDATE_ORDER_REQUEST, UPDATE_ORDER_SUCCESS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_BY_ORDERID_REQUEST, ORDER_DETAILS_BY_ORDERID_SUCCESS, ORDER_DETAILS_BY_ORDERID_FAIL } from "../constants/orderConstants";
 
 export const createOrder = (order) => async(dispatch, getState) => {
     try {
@@ -76,6 +76,24 @@ export const updateOrder = (id, status) => async(dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: UPDATE_ORDER_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        })
+    }
+}
+
+export const getOrderDetailsByOrderID = (id) => async(dispatch) => {
+    try {
+        dispatch({ type: ORDER_DETAILS_BY_ORDERID_REQUEST })
+
+        const { data } = await axios.get(`/api/orders/orderId/${id}`)
+
+        dispatch({
+            type: ORDER_DETAILS_BY_ORDERID_SUCCESS,
+            payload: data
+        })
+    } catch (error) {
+        dispatch({
+            type: ORDER_DETAILS_BY_ORDERID_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         })
     }

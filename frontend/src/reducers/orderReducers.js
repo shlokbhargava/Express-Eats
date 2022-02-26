@@ -1,4 +1,4 @@
-import { UPDATE_ORDER_FAIL, UPDATE_ORDER_REQUEST, UPDATE_ORDER_RESET, UPDATE_ORDER_SUCCESS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, } from "../constants/orderConstants";
+import { UPDATE_ORDER_FAIL, UPDATE_ORDER_REQUEST, UPDATE_ORDER_RESET, UPDATE_ORDER_SUCCESS, CREATE_ORDER_FAIL, CREATE_ORDER_REQUEST, CREATE_ORDER_SUCCESS, ORDER_DETAILS_FAIL, ORDER_DETAILS_REQUEST, ORDER_DETAILS_SUCCESS, ORDER_DETAILS_BY_ORDERID_REQUEST, ORDER_DETAILS_BY_ORDERID_SUCCESS, ORDER_DETAILS_BY_ORDERID_FAIL, } from "../constants/orderConstants";
 
 export const orderCreateReducer = (state = {}, action) => {
     switch(action.type) {
@@ -39,6 +39,20 @@ export const orderUpdateReducer = (state = {}, action) => {
         case UPDATE_ORDER_RESET:
             return {}
         default:
+            return state
+    }
+}
+
+
+export const orderDetailsByOrderIDReducer = (state = {}, action) => {
+    switch(action.type) {
+        case ORDER_DETAILS_BY_ORDERID_REQUEST:
+            return { loading: true }
+        case ORDER_DETAILS_BY_ORDERID_SUCCESS:
+            return { loading: false, success: true, order: action.payload }
+        case ORDER_DETAILS_BY_ORDERID_FAIL:
+            return { loading: false, error: action.payload }
+        default: 
             return state
     }
 }

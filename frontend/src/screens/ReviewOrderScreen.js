@@ -5,10 +5,12 @@ import { createOrder } from '../actions/orderAction'
 import Message from '../components/Message'
 import Progress from '../components/Progress'
 import { getStringPrice } from '../utility'
-
+import io from 'socket.io-client'
 
 const ReviewOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
+
+    // const socket = io()
 
     const cart = useSelector(state => state.cart)
     const { cartItems } = cart
@@ -52,7 +54,9 @@ const ReviewOrderScreen = ({ history }) => {
             history.push('/login')
         }
         if (success) {
-            history.push(`/order/${userInfo._id}`)
+            history.push(`/order/${order._id}`)
+            var socket = io();
+            socket.emit('order placed', order._id)
         }
     }, [success, dispatch, history, userInfo, order])
 

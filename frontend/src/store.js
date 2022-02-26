@@ -7,7 +7,7 @@ import { restaurantDetailsReducer, restaurantEditReducer, restaurantListReducer 
 import { dishCreateReducer, dishDeleteReducer, dishDetaisReducer, dishEditReducer, dishesListReducer, dishListReducer } from './reducers/dishReducers'
 import { cartReducer } from './reducers/cartReducers'
 import { addAddressReducer, addressListReducer, addressDeleteReducer, addressDetailsReducer } from './reducers/addressReducers'
-import { orderCreateReducer, orderDetailsReducer, orderUpdateReducer } from './reducers/orderReducers'
+import { orderCreateReducer, orderDetailsByOrderIDReducer, orderDetailsReducer, orderUpdateReducer } from './reducers/orderReducers'
 
 const reducer = combineReducers({
     userRegister: userRegisterReducer,
@@ -30,7 +30,8 @@ const reducer = combineReducers({
     addressDetail: addressDetailsReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
-    orderUpdate: orderUpdateReducer
+    orderUpdate: orderUpdateReducer,
+    orderDetailsByOrderID: orderDetailsByOrderIDReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []
