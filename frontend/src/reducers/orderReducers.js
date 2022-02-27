@@ -33,7 +33,7 @@ export const orderUpdateReducer = (state = {}, action) => {
         case UPDATE_ORDER_REQUEST:
             return { loading: true }
         case UPDATE_ORDER_SUCCESS:
-            return { loading: false }
+            return { loading: false, order: action.payload }
         case UPDATE_ORDER_FAIL:
             return { loading: false, error: action.payload }
         case UPDATE_ORDER_RESET:

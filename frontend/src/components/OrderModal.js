@@ -12,10 +12,10 @@ const OrderModal = ({ order }) => {
     return (
         <>
             <Modal.Header>
-                <Modal.Title>ORDER DETAILS # {order._id}</Modal.Title>
+                <h5><strong>ORDER DETAILS # {order._id}</strong></h5>
             </Modal.Header>
             <Modal.Body>
-            { !userInfo.isSeller &&<h4><strong>Order From : </strong>{order.restaurant.name}</h4> }
+            { !userInfo.isSeller &&<h5><strong>Order From : </strong>{order.restaurant.name}</h5> }
                 <Table responsive="sm">
                     <thead>
                     <tr className='text-center'>
@@ -60,9 +60,9 @@ const OrderModal = ({ order }) => {
                         }
                     </tbody>
                 </Table>
-                <Alert variant="dark">
-                    <Alert.Heading>Address</Alert.Heading>
-                    <p>
+                <Alert variant="primary">
+                    <strong style={{ fontSize: '17px' }}>Delivery Address - </strong>
+                    <p style={{ fontSize: '13px' }}>
                         {order.deliveryAddress.name} <br></br>
                         {order.deliveryAddress.address} <br></br>
                         {order.deliveryAddress.city}, {order.deliveryAddress.state} {order.deliveryAddress.postalCode} <br></br>

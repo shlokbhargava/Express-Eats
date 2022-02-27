@@ -53,7 +53,7 @@ const OrderListTable = ({ order }) => {
                 : 
                     order.status === 'Delivered' ? <p className='text-success'>&emsp;&emsp; <i className="fa-lg fas fa-check-circle"></i></p>
                 :
-                    order.status === 'Cancel' && <Button variant='danger' size='sm'>Order Cancelled</Button>
+                    order.status === 'Cancel' && <h6><span className="badge bg-danger" style={{ padding: '10px' }}>Order Cancelled</span></h6>
                 }
             </td>   
         </>

@@ -55,8 +55,8 @@ const ReviewOrderScreen = ({ history }) => {
         }
         if (success) {
             history.push(`/order/${order._id}`)
-            var socket = io();
-            socket.emit('order placed', order._id)
+            var socket = io()
+            socket.emit('join', `order_${order._id}`)
         }
     }, [success, dispatch, history, userInfo, order])
 

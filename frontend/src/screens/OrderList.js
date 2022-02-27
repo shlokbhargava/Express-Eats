@@ -46,7 +46,7 @@ const OrderList = ({ history }) => {
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> :
             <div>
                 <Table responsive="sm">
-                    <thead>
+                    <thead> 
                         <tr>
                             <th><strong>ORDER #</strong></th>
                             <th><strong>TOTAL AMOUNT</strong></th>

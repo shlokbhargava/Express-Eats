@@ -82,6 +82,10 @@ exports.updateOrder = asyncHandler(async(req, res) => {
         }
 
         const updatedOrder = await order.save()
+
+        const eventEmitter = req.app.get('eventEmitter')
+        eventEmitter.emit('orderUpdated', { id: req.params.id, status: req.body.status, updatedAt: updatedOrder.updatedAt })
+
         res.json(updatedOrder)
     } else {
         res.status(404)

@@ -154,7 +154,7 @@ p {
 }
 
 .track .step.active:before {
-  background: #f55b92
+  background: #3459e6
 }
 
 .track .step::before {
@@ -167,7 +167,7 @@ p {
 }
 
 .track .step.active .icon {
-  background: #f55b92;
+  background: #3459e6;
   color: #fff
 }
 
@@ -234,16 +234,27 @@ p {
     margin-bottom: 1rem
 } */
 
-.btn-warning {
+.btn-back {
     color: #ffffff;
-    background-color: #f55b92;
-    border-color: #f55b92;
     border-radius: 1px
 }
 
-.btn-warning:hover {
+.btn-back:hover {
     color: #ffffff;
-    background-color: #f55b92;
-    border-color: #f55b92;
-    border-radius: 1px
+    border-radius: 1px;
 }
+
+.bg-violet {
+  background-color: #ffa900;
+  border: #ffa900;
+}
+
+.btn-success {
+  background-color: #00b74a;
+  border: #00b74a;
+}
+
+/* .btn-info {
+  background-color: hsl(194, 96.6%, 38.5%);
+  border: hsl(194, 96.6%, 38.5%);
+} */
