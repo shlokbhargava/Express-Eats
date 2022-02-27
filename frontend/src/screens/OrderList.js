@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import io from 'socket.io-client'
 import { Breadcrumb, Table } from 'react-bootstrap'
 import { getOrderDetails } from '../actions/orderAction'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import OrderListTable from '../components/OrderListTable'
+import { toast } from 'react-toastify'
 
 const OrderList = ({ history }) => {
     const dispatch = useDispatch()
+
+    var [newOrders, setNewOrders] = useState()
 
     const restaurantDetails = useSelector((state) => state.restaurantDetails)
     const { restaurantInfo } = restaurantDetails
@@ -20,6 +24,18 @@ const OrderList = ({ history }) => {
 
     const orderDetails = useSelector((state) => state.orderDetails)
     const { orders, success: successOrderDetails, error, loading } = orderDetails
+
+    var socket = io()
+    socket.emit('join', `orders_${restaurantInfo._id}`)
+
+    socket.on('orderCreated', (order) => {
+        toast.info('New Order Received')
+        if (!newOrders) {
+            newOrders = orders.slice()
+        }
+        newOrders.unshift(order)
+        setNewOrders(newOrders)
+    })
 
     useEffect(() => {
         if (!userInfo || (userInfo && !userInfo.isSeller)) {
@@ -57,11 +73,16 @@ const OrderList = ({ history }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        { orders && orders.map((order) => (
+                        { newOrders ? newOrders.map((order) => (
                             <tr key={order._id}>
                                 <OrderListTable order={order} />
                             </tr>
-                        )) }
+                        )) : orders.map((order) => (
+                            <tr key={order._id}>
+                                <OrderListTable order={order} />
+                            </tr>
+                        )) 
+                        }
                     </tbody>
                 </Table>
             </div>

@@ -52,3 +52,7 @@ io.on('connection', (socket) => {
 eventEmitter.on('orderUpdated', (data) => {
   io.to(`order_${data.id}`).emit('orderUpdated', data)
 })
+
+eventEmitter.on('orderCreated', (order) => {
+  io.to(`orders_${order.restaurant}`).emit('orderCreated', order)
+})

@@ -27,6 +27,9 @@ exports.createOrder = asyncHandler(async(req, res) => {
             paidAt
         })
 
+        const eventEmitter = req.app.get('eventEmitter')
+        eventEmitter.emit('orderCreated', order)
+        
         res.status(201).json(order)
     }
 })

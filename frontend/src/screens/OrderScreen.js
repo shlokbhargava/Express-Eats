@@ -34,8 +34,6 @@ const OrderScreen = ({ match }) => {
   })
 
   const updatedOrder = (order) => {
-    console.log(order.status)
-    console.log(updated)
     return (
       <div className="track">
       { order.isPaid && <div className="step active"> <span className="icon"> <i className="fa fa-receipt"></i> </span> <span className="text">Order Placed</span> </div> }
