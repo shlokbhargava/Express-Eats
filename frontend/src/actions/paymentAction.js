@@ -1,7 +1,7 @@
 import axios from "axios"
 import { ORDER_PAYMENT_FAIL, ORDER_PAYMENT_REQUEST, ORDER_PAYMENT_SUCCESS } from "../constants/paymentConstants"
 
-export const checkOut = () => async(dispatch, getState) => {
+export const checkOut = (order) => async(dispatch, getState) => {
     try {
         dispatch({ type: ORDER_PAYMENT_REQUEST })
 
@@ -13,7 +13,7 @@ export const checkOut = () => async(dispatch, getState) => {
             }
         }
 
-        await axios.post('/api/payments/create-checkout-session', {}, config)
+        await axios.post('/api/payments/create-checkout-session', order, config)
 
         dispatch({
             type: ORDER_PAYMENT_SUCCESS,

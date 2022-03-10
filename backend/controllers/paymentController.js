@@ -8,14 +8,17 @@ const YOUR_DOMAIN = 'http://localhost:3000'
 // @route   POST /api/payments/create-checkout-session
 // @access  Private
 exports.checkOutSession = asyncHandler(async (req, res) => {
+    const order = req.body
+
+    console.log(order)
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
-          name: 'John',
+          name: order.user.name,
           currency: 'INR',
-          amount: '1000',
-          quantity: 1,
+          amount: order.totalPrice*100,
+          quantity: order.orderItems.length,
         },
       ],
       mode: 'payment',

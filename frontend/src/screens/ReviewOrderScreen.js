@@ -35,25 +35,38 @@ const ReviewOrderScreen = ({ history }) => {
     const gst = Number((0.05*itemsPrice).toFixed(2))
     const totalPrice = Number((itemsPrice+gst+packagingPrice+deliveryPrice).toFixed(2))
 
-    const placeOrderHandler = () => {
-        // dispatch(createOrder({
-        //     orderItems: cart.cartItems,
-        //     restaurant: cartItems[0].restaurant,
-        //     deliveryAddress: address._id,
-        //     paymentMethod: paymentMethod,
-        //     itemPrice: itemsPrice,
-        //     gst: gst,
-        //     deliveryPrice: deliveryPrice,
-        //     packagingPrice: packagingPrice,
-        //     totalPrice: totalPrice,
-        //     isPaid: true,
-        //     paidAt: Date.now()
-        // }))
-        dispatch(checkOut())
-    }
+    // const placeOrderHandler = () => {
+    //     dispatch(createOrder({
+    //         orderItems: cart.cartItems,
+    //         restaurant: cartItems[0].restaurant,
+    //         deliveryAddress: address._id,
+    //         paymentMethod: paymentMethod,
+    //         itemPrice: itemsPrice,
+    //         gst: gst,
+    //         deliveryPrice: deliveryPrice,
+    //         packagingPrice: packagingPrice,
+    //         totalPrice: totalPrice,
+    //         isPaid: true,
+    //         paidAt: Date.now()
+    //     }))
+    //     dispatch(checkOut())
+    // }
 
     const makePayment = () => {
-
+        dispatch(createOrder({
+            orderItems: cart.cartItems,
+            restaurant: cartItems[0].restaurant,
+            deliveryAddress: address._id,
+            paymentMethod: paymentMethod,
+            itemPrice: itemsPrice,
+            gst: gst,
+            deliveryPrice: deliveryPrice,
+            packagingPrice: packagingPrice,
+            totalPrice: totalPrice,
+            isPaid: true,
+            paidAt: Date.now()
+        }))
+        dispatch(checkOut(order))
     }
 
     useEffect(() => {
@@ -166,12 +179,9 @@ const ReviewOrderScreen = ({ history }) => {
                                 </ListGroupItem>
                                         
                                 <ListGroupItem>
-                                    <StripeCheckout name='Express Eats' amount={totalPrice*100} currency='INR' email={userInfo.email} stripeKey='' token={makePayment}>
+                                    <StripeCheckout name='Express Eats' amount={totalPrice*100} currency='INR' email={userInfo.email} stripeKey={process.env.REACT_APP_STRIPE_KEY} token={makePayment}>
                                         <div className="d-grid gap-2">
-                                            {/* <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
-                                                Pay & Confirm
-                                            </Button> */} 
-                                            <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
+                                            <Button type='button' variant='dark' disabled={cartItems.length === 0} block>
                                                 Checkout
                                             </Button>
                                         </div>
