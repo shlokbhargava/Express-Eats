@@ -170,7 +170,7 @@ const ReviewOrderScreen = ({ history }) => {
                                         <div className="d-grid gap-2">
                                             {/* <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
                                                 Pay & Confirm
-                                            </Button> */}
+                                            </Button> */} 
                                             <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
                                                 Checkout
                                             </Button>
