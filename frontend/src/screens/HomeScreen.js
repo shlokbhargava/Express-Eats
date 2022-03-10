@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Badge, Button, Card, Col, Container, Image, Row } from 'react-bootstrap'
+import { Button, Card, Col, Container, Image, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Route } from 'react-router-dom'
 import { listRestaurants, restaurant } from '../actions/restaurantActions'
@@ -35,11 +35,6 @@ const HomeScreen = ({ match, history }) => {
 
     return (
         <Container className='py-5'>
-            <Row>
-                <Col md={12} className='text-center'>
-                    <h4 className="animate-charcter">Get Real Time Updates for Your Order</h4>
-                </Col>
-            </Row>
             <Row className='py-5 mb-5'>
                 <Col md={6}>
                     <h1 className='h1-thin'>Safe Food</h1>
@@ -52,7 +47,7 @@ const HomeScreen = ({ match, history }) => {
                 </Col>
             </Row>
             <Row className='py-3'>
-                <h5 className='text-center'>Search your state, restaurant or dish <i className="fas fa-store-alt"></i></h5>
+                <p className='text-center'>Search your state, restaurant or dish <i className="fas fa-store-alt"></i></p>
             </Row>
             <Route render={({ history }) => <SearchScreen history={history} /> } />
             { loading && <Loader /> }

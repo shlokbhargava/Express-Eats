@@ -8,6 +8,7 @@ import { dishCreateReducer, dishDeleteReducer, dishDetaisReducer, dishEditReduce
 import { cartReducer } from './reducers/cartReducers'
 import { addAddressReducer, addressListReducer, addressDeleteReducer, addressDetailsReducer } from './reducers/addressReducers'
 import { orderCreateReducer, orderDetailsByOrderIDReducer, orderDetailsReducer, orderUpdateReducer } from './reducers/orderReducers'
+import { orderPaymentReducer } from './reducers/paymentReducers'
 
 const reducer = combineReducers({
     userRegister: userRegisterReducer,
@@ -32,6 +33,7 @@ const reducer = combineReducers({
     orderDetails: orderDetailsReducer,
     orderUpdate: orderUpdateReducer,
     orderDetailsByOrderID: orderDetailsByOrderIDReducer,
+    orderPayment: orderPaymentReducer,
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') ? JSON.parse(localStorage.getItem('cartItems')) : []

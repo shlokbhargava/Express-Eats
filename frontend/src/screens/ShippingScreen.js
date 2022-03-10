@@ -22,9 +22,6 @@ const ShippingScreen = ({ history }) => {
     const addressDetail = useSelector((state) => state.addressDetail)
     const { success: addressSuccess } = addressDetail
 
-    const addressDelete = useSelector((state) => state.addressDelete)
-    const { success: successDelete } = addressDelete
-
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -32,13 +29,13 @@ const ShippingScreen = ({ history }) => {
             history.push('/login')
         }
 
-        if (success || successDelete) {
+        if (success) {
             setShow(false)
             dispatch(listAddress())
         }
 
         dispatch(listAddress())
-    }, [success, dispatch, userInfo, history, successDelete])
+    }, [success, dispatch, userInfo, history])
 
     const submitHandler = () => {
         history.push('/payment')
