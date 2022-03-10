@@ -10,7 +10,9 @@ const uploadRoutes = require('./routes/uploadRoutes')
 const dishRoutes = require('./routes/dishRoutes')
 const addressRoutes = require('./routes/addressRoutes')
 const orderRoutes = require('./routes/orderRoutes')
+const paymentRoutes = require('./routes/paymentRoutes')
 const Emitter = require('events')
+
 
 dotenv.config()
 
@@ -27,17 +29,12 @@ app.use('/api/upload', uploadRoutes)
 app.use('/api/dish', dishRoutes)
 app.use('/api/address', addressRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/payments', paymentRoutes)
 
 const eventEmitter = new Emitter()
 app.set('eventEmitter', eventEmitter)
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads'))) 
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')))
-
-  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')))
-}
 
 app.use(notFound)
 
@@ -62,3 +59,4 @@ eventEmitter.on('orderUpdated', (data) => {
 eventEmitter.on('orderCreated', (order) => {
   io.to(`orders_${order.restaurant}`).emit('orderCreated', order)
 })
+

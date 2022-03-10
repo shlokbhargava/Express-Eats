@@ -6,6 +6,8 @@ import Message from '../components/Message'
 import Progress from '../components/Progress'
 import { getStringPrice } from '../utility'
 import io from 'socket.io-client'
+import { checkOut } from '../actions/paymentAction'
+import StripeCheckout from 'react-stripe-checkout'
 
 const ReviewOrderScreen = ({ history }) => {
     const dispatch = useDispatch()
@@ -34,19 +36,24 @@ const ReviewOrderScreen = ({ history }) => {
     const totalPrice = Number((itemsPrice+gst+packagingPrice+deliveryPrice).toFixed(2))
 
     const placeOrderHandler = () => {
-        dispatch(createOrder({
-            orderItems: cart.cartItems,
-            restaurant: cartItems[0].restaurant,
-            deliveryAddress: address._id,
-            paymentMethod: paymentMethod,
-            itemPrice: itemsPrice,
-            gst: gst,
-            deliveryPrice: deliveryPrice,
-            packagingPrice: packagingPrice,
-            totalPrice: totalPrice,
-            isPaid: true,
-            paidAt: Date.now()
-        }))
+        // dispatch(createOrder({
+        //     orderItems: cart.cartItems,
+        //     restaurant: cartItems[0].restaurant,
+        //     deliveryAddress: address._id,
+        //     paymentMethod: paymentMethod,
+        //     itemPrice: itemsPrice,
+        //     gst: gst,
+        //     deliveryPrice: deliveryPrice,
+        //     packagingPrice: packagingPrice,
+        //     totalPrice: totalPrice,
+        //     isPaid: true,
+        //     paidAt: Date.now()
+        // }))
+        dispatch(checkOut())
+    }
+
+    const makePayment = () => {
+
     }
 
     useEffect(() => {
@@ -58,7 +65,17 @@ const ReviewOrderScreen = ({ history }) => {
             var socket = io()
             socket.emit('join', `order_${order._id}`)
         }
+        const query = new URLSearchParams(window.location.search);
+
+        if (query.get("success")) {
+            <Message variant='succee'>{"Order placed! You will receive an email confirmation."}</Message>
+        }
+
+        if (query.get("canceled")) {
+            <Message variant='danger'>{"Order canceled -- continue to shop around and checkout when you're ready."}</Message>
+        }
     }, [success, dispatch, history, userInfo, order])
+    
 
     return (
         <>
@@ -149,11 +166,16 @@ const ReviewOrderScreen = ({ history }) => {
                                 </ListGroupItem>
                                         
                                 <ListGroupItem>
-                                    <div className="d-grid gap-2">
-                                        <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
-                                            Pay & Confirm
-                                        </Button>
-                                    </div>
+                                    <StripeCheckout name='Express Eats' amount={totalPrice*100} currency='INR' email={userInfo.email} stripeKey='' token={makePayment}>
+                                        <div className="d-grid gap-2">
+                                            {/* <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
+                                                Pay & Confirm
+                                            </Button> */}
+                                            <Button type='button' variant='dark' disabled={cartItems.length === 0} onClick={placeOrderHandler} block>
+                                                Checkout
+                                            </Button>
+                                        </div>
+                                    </StripeCheckout>
                                 </ListGroupItem>                            
                             </ListGroup>
                         </Card>
