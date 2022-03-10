@@ -10,7 +10,7 @@ const YOUR_DOMAIN = 'http://localhost:3000'
 exports.checkOutSession = asyncHandler(async (req, res) => {
     const order = req.body
 
-    console.log(order)
+    console.log(order, "asdhibkjv.nlk,")
 
     const session = await stripe.checkout.sessions.create({
       line_items: [
