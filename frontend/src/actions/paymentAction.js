@@ -9,14 +9,16 @@ export const checkOut = (order) => async(dispatch, getState) => {
 
         const config = {
             headers: {
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${userInfo.token}`
             }
         }
 
-        await axios.post('/api/payments/create-checkout-session', order, config)
+        const { data } = await axios.post('/api/payments/create-checkout-session', order, config)
 
         dispatch({
             type: ORDER_PAYMENT_SUCCESS,
+            payload: data
         })
     } catch (error) {
         dispatch({

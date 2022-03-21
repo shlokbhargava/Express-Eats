@@ -13,30 +13,6 @@ const CartScreen = ({ match, location, history }) => {
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
 
     const dispatch = useDispatch()
-
-    // const getDeliveryTime = () => {
-    //     const day = new Date()
-    //     var min = day.getMinutes() + 30
-    //     var hr = day.getHours() 
-
-    //     if (min >= 60) {
-    //         min -= 60
-    //     }
-
-    //     if (hr <= 9) {
-    //         var newHr = '0' + hr
-    //     }
-        
-    //     var time = newHr + ":" + min
-    //     time = time.toString().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
-
-    //     if (time.length > 1) {
-    //         time = time.slice (1)
-    //         time[5] = +time[0] < 12 ? ' AM' : ' PM'
-    //         time[0] = +time[0] % 12 || 12
-    //     }
-    //     return time.join('');
-    // }
     
     const cart = useSelector((state) => state.cart)
     const { cartItems } = cart

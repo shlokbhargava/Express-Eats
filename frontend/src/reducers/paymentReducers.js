@@ -6,7 +6,7 @@ export const orderPaymentReducer = (state = {}, action) => {
         case ORDER_PAYMENT_REQUEST:
             return { loading: true }
         case ORDER_PAYMENT_SUCCESS:
-            return { loading: false, success: true }
+            return { loading: false, success: true, data: action.payload }
         case ORDER_PAYMENT_FAIL:
             return { loading: false, error: action.payload }
         default:

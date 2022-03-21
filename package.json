@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/shlokbhargava/Express-eats#readme",
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.7.0",
+    "@stripe/stripe-js": "^1.24.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",

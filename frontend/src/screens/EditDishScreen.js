@@ -58,9 +58,7 @@ const EditDishScreen = ({ match, history }) => {
             }
 
             const { data } = await axios.post('/api/upload', formData, config)
-
-            console.log('data', data)
-
+            
             setImage(data)
             setUploading(false)
         } catch (error) {

@@ -38,7 +38,7 @@ const ShippingScreen = ({ history }) => {
     }, [success, dispatch, userInfo, history])
 
     const submitHandler = () => {
-        history.push('/payment')
+        history.push('/revieworder')
     }
 
     return (

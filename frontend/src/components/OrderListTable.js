@@ -28,6 +28,7 @@ const OrderListTable = ({ order }) => {
       updated.status = data.status
       setUpdated(updated)
       toast.success(`Order Updated to: ${updated.status}`)
+      socket.off('orderUpdated')
     })
 
     const handleClose = () => setShow(false)
@@ -45,7 +46,7 @@ const OrderListTable = ({ order }) => {
                 <td>{getDate(order.createdAt)} &nbsp;{moment(order.createdAt).format('h:mm A')}</td>
                 <td>
                     {
-                        order.status === '' ? 
+                        order.status === 'Placed' ? 
                         <>
                             <Button variant='danger' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Cancel')}>Cancel</Button> &nbsp;
                             <Button variant='success' size='sm' onClick={() => updateOrderStatusHandler(order._id, 'Confirm')}>Accept</Button>

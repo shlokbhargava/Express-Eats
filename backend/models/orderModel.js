@@ -44,7 +44,6 @@ const orderSchema = mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        required: true
     },
     itemPrice: {
         type: Number,
@@ -86,6 +85,9 @@ const orderSchema = mongoose.Schema({
     deliveredAt: {
         type: Date
     },
+    paymentID: {
+        type: String
+    }
 }, {
     timestamps: true
 }) 

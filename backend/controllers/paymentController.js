@@ -1,30 +1,34 @@
 const asyncHandler = require("express-async-handler")
-const stripe = require('stripe')('sk_test_51GvoiXJmYE2iXkVGx63vkh5NcG9gqhfMBrZQJErYGY7ofDwacQ1AT3zsqmWnyfOHeYRafXsLxZwelKL6BDOMxs2n00K5dMPh6V')
+const dotenv = require('dotenv')
+const Order = require('../models/orderModel')
 
-const YOUR_DOMAIN = 'http://localhost:3000'
+dotenv.config()
 
+const stripe = require('stripe')(process.env.STRIPE_API)
 
 // @desc    Payment Check Out Session
 // @route   POST /api/payments/create-checkout-session
 // @access  Private
 exports.checkOutSession = asyncHandler(async (req, res) => {
-    const order = req.body
+  const order = await Order.findById(req.body._id)
 
-    console.log(order, "asdhibkjv.nlk,")
-
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          name: order.user.name,
-          currency: 'INR',
-          amount: order.totalPrice*100,
-          quantity: order.orderItems.length,
-        },
-      ],
-      mode: 'payment',
-      success_url: `${YOUR_DOMAIN}?success=true`,
-      cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-    });
-  
-    res.redirect(303, session.url)
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: order.totalPrice*100,
+    currency: "inr",
+    automatic_payment_methods: {enabled: true},
   })
+
+  if (paymentIntent) {
+    order.paymentMethod = 'stripe'
+    order.isPaid = true
+    order.paidAt = Date.now()
+    order.paymentID = paymentIntent.id
+    order.status = 'Placed'
+
+    await order.save()
+  }
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  })
+})

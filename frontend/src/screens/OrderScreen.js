@@ -17,7 +17,7 @@ const OrderScreen = ({ match }) => {
   const orderDetailsByOrderID = useSelector((state) => state.orderDetailsByOrderID)
   const { loading, order, error } = orderDetailsByOrderID
 
-  var [updated, setUpdated] = useState()
+  var [updated, setUpdated] = useState(null)
 
   var socket = io()
 
@@ -26,11 +26,12 @@ const OrderScreen = ({ match }) => {
   }
 
   socket.on('orderUpdated', (data) => {
-    updated = {...order}
-    updated.updatedAt = data.updatedAt
-    updated.status = data.status
-    setUpdated(updated)
-    toast.success(`Order Updated to: ${updated.status}`)
+    const response = {...order}
+    response.updatedAt = data.updatedAt
+    response.status = data.status
+    setUpdated(response)
+    toast.success(`Order Updated to: ${response.status}`)
+    socket.off('orderUpdated')
   })
 
   const updatedOrder = (order) => {
@@ -74,7 +75,9 @@ const OrderScreen = ({ match }) => {
                       <Row>
                           <Col> <strong>Ordered On:</strong> <br></br> {moment(order.createdAt).format('MMMM Do YYYY, h:mm A')} </Col>
                           <Col> <strong>Ordered From:</strong> <br></br> {order.restaurant.name} | <i className="fa fa-phone"></i> {order.restaurant.contact} </Col>
-                          <Col> <strong>Status:</strong> <br></br> {order.status} | {moment(order.updatedAt).format('MMMM Do YYYY, h:mm A')} </Col>
+                          <Col>  
+                            { updated ? <> <strong>Status:</strong> <br></br> {updated.status} | {moment(updated.updatedAt).format('MMMM Do YYYY, h:mm A')}</> : <> <strong>Status:</strong> <br></br> {order.status} | {moment(order.updatedAt).format('MMMM Do YYYY, h:mm A')} </> }
+                          </Col>
                       </Row>
                     </Card.Body>
                 </Card>

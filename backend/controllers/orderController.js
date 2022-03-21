@@ -1,12 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const Order = require("../models/orderModel");
+const moment = require('moment')
 
 
 // @desc     Create new Order
 // @route    POST /api/orders
 // @access   Private
 exports.createOrder = asyncHandler(async(req, res) => {
-    const { orderItems, restaurant, deliveryAddress, paymentMethod, itemPrice, gst, deliveryPrice, packagingPrice, totalPrice, isPaid, paidAt } = req.body
+    const { orderItems, restaurant, deliveryAddress, itemPrice, gst, deliveryPrice, packagingPrice, totalPrice } = req.body
 
     if (orderItems && orderItems.length === 0) {
         res.status(400)
@@ -17,14 +18,11 @@ exports.createOrder = asyncHandler(async(req, res) => {
             orderItems,
             restaurant,
             deliveryAddress,
-            paymentMethod,
             itemPrice,
             gst,
             deliveryPrice,
             packagingPrice,
             totalPrice,
-            isPaid,
-            paidAt
         })
 
         const eventEmitter = req.app.get('eventEmitter')
