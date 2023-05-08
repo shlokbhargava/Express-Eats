@@ -62,7 +62,7 @@ const CheckoutForm = ({ order }) => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `https://expresseats.herokuapp.com/order/${order._id}`,
+        return_url: `https://express-eats-app.onrender.com/order/${order._id}`,
       },
     });
 
